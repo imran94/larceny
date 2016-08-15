@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
+public class Tile : MonoBehaviour {
+
+	public int tileX;
+	public int tileZ;
+	public TileMap map;
 
 	// Use this for initialization
 	void Start () {

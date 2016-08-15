@@ -1,17 +1,23 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class TileMap : MonoBehaviour {
 
+	public Player player;
+	public int[,] tiles;
     public TileType[] tileTypes;
 
-    int[,] tiles;
+	const int WALKABLE = 0;
+	const int NONWALKABLE = 1;
 
     int mapSizeX = 10;
     int mapSizeZ = 10;
 
+	private Transform tileMap;
+	private List <Vector3> tilePositions = new List<Vector3> ();
+
     // Use this for initialization
-    void Awake()
+    void generate()
     {
         generateMapData();
         generateMapVisual();
@@ -32,6 +38,7 @@ public class TileMap : MonoBehaviour {
         {
             for (int z = 0; z < mapSizeZ; z++)
             {
+				tilePositions.Add(new Vector3(x, 0f, z));
                 tiles[x, z] = 0;
             }
         }
@@ -43,18 +50,22 @@ public class TileMap : MonoBehaviour {
 
     void generateMapVisual()
     {
-        Debug.Log(tileTypes.Length);
+		tileMap = new GameObject ("TileMap").transform;
 
         for (int x = 0; x < mapSizeX; x++)
         {
             for (int z = 0; z < mapSizeZ; z++)
             {
-                TileType tt = tileTypes[tiles[x, z]];
-                Instantiate(tt.tileVisualPrefab, new Vector3(x, 0, z), Quaternion.identity);
+				TileType tt = tileTypes [tiles [x, z]];
+				GameObject go = (GameObject) Instantiate(tt.tileVisualPrefab, 
+															new Vector3(x, 0f, z), 
+															Quaternion.identity);
+
+				go.transform.SetParent (tileMap);
             }
         }
     }
-	
+
 	// Update is called once per frame
 	void Update () {
 	}
