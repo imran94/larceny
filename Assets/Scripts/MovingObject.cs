@@ -30,9 +30,9 @@ public abstract class MovingObject : MonoBehaviour
         Vector3 start = transform.position;
 
         // Calculate end position based on the direction parameters passed in when calling Move.
-        Vector3 end = start + new Vector3(xDir, zDir);
+        Vector3 end = start + new Vector3((float)xDir, 0f, (float)zDir);
 
-        if (TileMap.tiles[(int)end.x, (int)end.y].isWalkable)
+        if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
             StartCoroutine(SmoothMovement(end));
             return true;

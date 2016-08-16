@@ -5,7 +5,7 @@ public class TileMap : MonoBehaviour {
 
     public int number;
 
-	public Player player;
+	public GameObject player;
 	public static TileType[,] tiles;
     public TileType[] tileTypes;
 
@@ -29,6 +29,8 @@ public class TileMap : MonoBehaviour {
         GameObject walkable = (GameObject)Instantiate(Resources.Load("Walkable"));
         GameObject nonWalkable = (GameObject)Instantiate(Resources.Load("NonWalkable"));
 
+        player = GameObject.Find("Player");
+
         tileTypes = new TileType[2];
         tileTypes[WALKABLE] = new TileType(walkable, true);
         tileTypes[NONWALKABLE] = new TileType(nonWalkable, false);
@@ -47,6 +49,8 @@ public class TileMap : MonoBehaviour {
         tiles[4, 4] = tileTypes[NONWALKABLE];
         tiles[4, 6] = tileTypes[NONWALKABLE];
         tiles[4, 8] = tileTypes[NONWALKABLE];
+
+        player.transform.position = new Vector3(4f, 10f, 5f);
     }
 
     void generateMapVisual()

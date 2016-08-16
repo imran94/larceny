@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     public float levelStartDelay = 2f;
     public float turnDelay = 0.1f;
 	public static GameManager instance = null;
+
     public bool playersTurn = true;
 
     public GameObject tileMap;
