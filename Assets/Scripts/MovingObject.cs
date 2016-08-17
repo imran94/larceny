@@ -26,15 +26,21 @@ public abstract class MovingObject : MonoBehaviour
 
     protected bool Move(int xDir, int zDir)
     {
+
         //Store start position to move from, based on objects current transform position.
         Vector3 start = transform.position;
 
         // Calculate end position based on the direction parameters passed in when calling Move.
-        Vector3 end = start + new Vector3((float)xDir, 0f, (float)zDir);
-
+        Vector3 end = start + new Vector3(xDir, 0f, zDir);
+		
         if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
-            StartCoroutine(SmoothMovement(end));
+			GameManager.instance.playersTurn = false;
+			Debug.Log (transform.position);
+			transform.position = end;
+			GameManager.instance.playersTurn = false;
+
+            //StartCoroutine(SmoothMovement(end));
             return true;
         }
 
