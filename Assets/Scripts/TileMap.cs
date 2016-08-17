@@ -11,6 +11,7 @@ public class TileMap : MonoBehaviour {
 
 	const int WALKABLE = 0;
 	const int NONWALKABLE = 1;
+	const int EXIT = 2;
 
     int mapSizeX = 10;
     int mapSizeZ = 10;
@@ -26,31 +27,42 @@ public class TileMap : MonoBehaviour {
     
     void generateMapData()
     {
-        GameObject walkable = (GameObject)Instantiate(Resources.Load("Walkable"));
-        GameObject nonWalkable = (GameObject)Instantiate(Resources.Load("NonWalkable"));
+        GameObject walkable = (GameObject)Instantiate (Resources.Load ("Walkable"));
+        GameObject nonWalkable = (GameObject)Instantiate (Resources.Load ("NonWalkable"));
+		GameObject exit = (GameObject)Instantiate (Resources.Load ("Exit"));
 
         player = GameObject.Find("Player");
 
-        tileTypes = new TileType[2];
-        tileTypes[WALKABLE] = new TileType(walkable, true);
-        tileTypes[NONWALKABLE] = new TileType(nonWalkable, false);
+        tileTypes = new TileType[3];
+        tileTypes [WALKABLE] = new TileType (walkable, true);
+        tileTypes [NONWALKABLE] = new TileType (nonWalkable, false);
+		tileTypes [EXIT] = new TileType (exit, true);
 
-        tiles = new TileType[mapSizeX, mapSizeZ];
+		tiles = new TileType[mapSizeX, mapSizeZ];
 
         for (int x = 0; x < mapSizeX; x++)
         {
             for (int z = 0; z < mapSizeZ; z++)
             {
 				tilePositions.Add(new Vector3(x, 0f, z));
-                tiles[x, z] = tileTypes[WALKABLE];
+                tiles[x, z] = tileTypes[NONWALKABLE];
             }
         }
 
-        tiles[4, 4] = tileTypes[NONWALKABLE];
-        tiles[4, 6] = tileTypes[NONWALKABLE];
-        tiles[4, 8] = tileTypes[NONWALKABLE];
+		// Convert to a function
+		tiles [4, 4] = tileTypes [WALKABLE];
+		tiles [4, 5] = tileTypes [WALKABLE];
+        tiles [4, 6] = tileTypes [WALKABLE];
+		tiles [4, 7] = tileTypes [WALKABLE];
+		tiles [4, 8] = tileTypes [WALKABLE];
 
-        player.transform.position = new Vector3(4f, 10f, 5f);
+		tiles [5, 8] = tileTypes [WALKABLE];
+		tiles [6, 8] = tileTypes [WALKABLE];
+		tiles [7, 8] = tileTypes [WALKABLE];
+
+		tiles [8, 8] = tileTypes [EXIT];
+
+        player.transform.position = new Vector3(4f, 3f, 4f);
     }
 
     void generateMapVisual()
@@ -65,7 +77,7 @@ public class TileMap : MonoBehaviour {
 				GameObject go = (GameObject) Instantiate(tt.tileVisualPrefab, 
 															new Vector3(x, 0f, z), 
 															Quaternion.identity);
-
+				
 				go.transform.SetParent (tileMap);
             }
         }

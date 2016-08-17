@@ -32,13 +32,12 @@ public abstract class MovingObject : MonoBehaviour
 
         // Calculate end position based on the direction parameters passed in when calling Move.
         Vector3 end = start + new Vector3(xDir, 0f, zDir);
-		
-        if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
+
+		if (TileMap.tiles[(int) Mathf.Round (end.x), (int) Mathf.Round (end.z)].isWalkable)
         {
 			GameManager.instance.playersTurn = false;
 			Debug.Log (transform.position);
 			transform.position = end;
-			GameManager.instance.playersTurn = false;
 
             //StartCoroutine(SmoothMovement(end));
             return true;

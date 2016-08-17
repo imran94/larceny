@@ -33,10 +33,9 @@ public class Player : MovingObject {
 
         if (horizontal != 0 || vertical != 0)
 		{
-			Debug.Log("Horizontal: " + horizontal);
-			Debug.Log ("Vertical: " + vertical);
             Move(horizontal, vertical);
-            //AttemptMove<TileType>(horizontal, vertical);
+
+			//AttemptMove<TileType>(horizontal, vertical);
 		}
     }
 

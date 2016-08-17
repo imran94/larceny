@@ -5,10 +5,11 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
     public float levelStartDelay = 2f;
-    public float turnDelay = 0.1f;
+    public float turnDelay = 1f;
 	public static GameManager instance = null;
 
-    public bool playersTurn = true;
+	private GameObject player;
+	public bool playersTurn = true;
 
     public GameObject tileMap;
     public TileMap tileScript;
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour {
 		// set this to not be destroyed when reloading scene
 		DontDestroyOnLoad (gameObject);
 
+		player = GameObject.Find ("Player");
+
         enemies = new List<Enemy>();
 
         //Get a component reference to the attached TileMap script
@@ -52,6 +55,14 @@ public class GameManager : MonoBehaviour {
         if (playersTurn || enemiesMoving)
             return;
 
+		int x = (int)Mathf.Round (player.transform.position.x);
+		int z = (int)Mathf.Round (player.transform.position.z);
+
+		if (TileMap.tiles [x, z].name == "Finish") 
+		{
+			levelComplete ();
+		}
+			
         StartCoroutine(MoveEnemies());
 	}
 
@@ -59,6 +70,11 @@ public class GameManager : MonoBehaviour {
     {
         enemies.Add(script);
     }
+
+	public void levelComplete()
+	{
+		Debug.Log ("levelComplete");
+	}
 
     public void GameOver()
     {
