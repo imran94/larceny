@@ -18,7 +18,7 @@ public class Player : MovingObject {
 	private void Update ()
     {
         // Exit the function if it's not the player's turn
-        if (!GameManager.instance.playersTurn) return;
+		if (!GameManager.instance.playersTurn) return;
 
         int horizontal = 0;     // Horizontal move direction
         int vertical = 0;       // Vertical move direction
@@ -32,8 +32,12 @@ public class Player : MovingObject {
             vertical = 0;
 
         if (horizontal != 0 || vertical != 0)
+		{
+			Debug.Log("Horizontal: " + horizontal);
+			Debug.Log ("Vertical: " + vertical);
             Move(horizontal, vertical);
             //AttemptMove<TileType>(horizontal, vertical);
+		}
     }
 
 	protected override void OnCantMove<T>(T component)

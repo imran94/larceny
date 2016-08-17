@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour {
 	void Start ()
     {
         player = GameObject.Find("Player");
-        offset = new Vector3(5f, 3f, 0);
+        offset = new Vector3(0, 3f, 0);
 	}
 	
 	void LateUpdate ()

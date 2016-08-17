@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour {
 	{
 
         enemies.Clear();
-        //tileScript.Start();
 	}
 	
 	// Update is called once per frame
