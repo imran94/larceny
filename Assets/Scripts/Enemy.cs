@@ -2,10 +2,9 @@
 using System.Collections;
 using System;
 
-public class Enemy : MovingObject {
+public abstract class Enemy : MovingObject {
 
     private Animator animator;
-    private Transform target;
 
     public bool moveHorizontally = false;
     public bool moveVertically = false;
@@ -13,7 +12,6 @@ public class Enemy : MovingObject {
 	// Use this for initialization
 	protected override void Start () {
         animator = GetComponent<Animator>();
-        //target = GameObject.FindGameObjectsWithTag("Player").transform;
         base.Start();
 	}
 
@@ -22,21 +20,6 @@ public class Enemy : MovingObject {
         base.AttemptMove<T>(xDir, zDir);
     }
 
-    public void MoveEnemy()
-    {
-        int xDir = 0;
-        int zDir = 0;
-
-        if (moveHorizontally)
-            xDir++;
-        if (moveVertically)
-            zDir++;
-
-        AttemptMove<Player>(xDir, zDir);
-    }
-
-    protected override void OnCantMove<T>(T component)
-    {
-        Player hitPlayer = component as Player;
-    }
+    abstract public void MoveEnemy();
+    abstract protected override void OnCantMove<T>(T component);
 }
