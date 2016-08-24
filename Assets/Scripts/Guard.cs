@@ -4,25 +4,39 @@ using System;
 
 public class Guard : Enemy {
 
-    public Guard(Vector3 position)
-    {
-        GameObject go = (GameObject)Instantiate(Resources.Load("ChainMail_Knight"), position, Quaternion.identity);
-    }
+    GameObject player;
+    bool moving;
 
-	// Use this for initialization
-	//public override void Start () {
-	
-	//}
-	
-	// Update is called once per frame
-	//public override void Update () {
-	
-	//}
+    // Use this for initialization
+    protected override void Start()
+    {
+        player = GameObject.Find ("Player");
+        moving = false;
+    }
+    
+    // Update is called once per frame
+    protected override void Update ()
+    {
+        Debug.Log("transformForward: " + (transform.localPosition + transform.forward));
+        if (!moving && (int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round(transform.position.x)
+                && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round(transform.position.z))
+        {
+            Destroy(this);
+        }
+    }
 
     public override void MoveEnemy()
-    {
-        Move(1, 0);
+    { 
+        if ((int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward).x)
+                && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round((transform.localPosition + transform.forward).z))
+        {
+            moving = true;
+            transform.localPosition += transform.forward;
+            Destroy(player);
+            moving = false;
+        }
     }
+
 
     protected override void OnCantMove<T>(T component)
     {
