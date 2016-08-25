@@ -12,10 +12,10 @@ public class LoadOnClick : MonoBehaviour {
         SceneManager.LoadScene(sceneIndex); //Loads scene based on the index of each scene
     }
 
-    public void OnClickWin ()  //Temporary way to enable WinImg
-    {
-        WinImg.SetActive(true);
-    }
+    //public void OnClickWin ()  //Temporary way to enable WinImg
+    //{
+    //    WinImg.SetActive(true);
+    //}
 
     public void OnClickExit()
     {

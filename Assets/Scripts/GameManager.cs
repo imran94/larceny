@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour {
     public float levelStartDelay = 2f;
     public float turnDelay = 1f;
 	public static GameManager instance = null;
+    public GameObject WinImg;
 
-	private GameObject player;
+    private GameObject player;
 	public bool playersTurn = true;
 
     public GameObject tileMap;
@@ -31,7 +32,9 @@ public class GameManager : MonoBehaviour {
 			Destroy (this);
 
         // set this to not be destroyed when reloading scene
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
+        /** gameObject needs to be destroyed in order to eliminate the bug **/
+
 
         player = GameObject.Find ("Player");
 		//player = (GameObject)Instantiate(Resources.Load("Player"));
@@ -89,8 +92,9 @@ public class GameManager : MonoBehaviour {
 
 	public void levelComplete()
 	{
-        resetLvl();
-	}
+        //resetLvl();
+        WinImg.SetActive(true);
+    }
 
     public void GameOver()
     {
