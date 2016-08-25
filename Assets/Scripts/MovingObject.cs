@@ -24,6 +24,11 @@ public abstract class MovingObject : MonoBehaviour
         inverseMoveTime = 1f / moveTime;
     }
 
+    protected virtual void Update()
+    {
+
+    }
+
     protected bool Move(int xDir, int zDir)
     {
 
@@ -32,12 +37,11 @@ public abstract class MovingObject : MonoBehaviour
 
         // Calculate end position based on the direction parameters passed in when calling Move.
         Vector3 end = start + new Vector3(xDir, 0f, zDir);
-
+        
 		if (TileMap.tiles[(int) Mathf.Round (end.x), (int) Mathf.Round (end.z)].isWalkable)
         {
 			GameManager.instance.playersTurn = false;
-			Debug.Log (transform.position);
-			transform.position = end;
+			transform.position = start + new Vector3(xDir * 2, 0f, zDir * 2);
 
             //StartCoroutine(SmoothMovement(end));
             return true;
@@ -54,7 +58,7 @@ public abstract class MovingObject : MonoBehaviour
         Vector3 start = transform.position;
 
         // Calculate end position based on the direction parameters passed in when calling Move.
-        Vector3 end = start + new Vector3(xDir, zDir);
+        Vector3 end = start + new Vector3(xDir, 0, zDir);
 
         //Disable the boxCollider so that linecast doesn't hit this object's own collider.
         boxCollider.enabled = false;
@@ -93,8 +97,8 @@ public abstract class MovingObject : MonoBehaviour
         while (sqrRemainingDistance > float.Epsilon)
         {
             //Find a new position proportionally closer to the end, based on the moveTime
-            Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
-
+            Vector3 newPosition = Vector3.MoveTowards(transform.position, end, inverseMoveTime * Time.deltaTime);
+            
             //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
             rb.MovePosition(newPosition);
 
@@ -132,7 +136,6 @@ public abstract class MovingObject : MonoBehaviour
             //Call the OnCantMove function and pass it hitComponent as a parameter.
             OnCantMove(hitComponent);
     }
-
 
     //The abstract modifier indicates that the thing being modified has a missing or incomplete implementation.
     //OnCantMove will be overriden by functions in the inheriting classes.

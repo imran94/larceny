@@ -17,22 +17,25 @@ public class Guard : Enemy {
     // Update is called once per frame
     protected override void Update ()
     {
-        Debug.Log("transformForward: " + (transform.localPosition + transform.forward));
-        if (!moving && (int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round(transform.position.x)
-                && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round(transform.position.z))
-        {
-            Destroy(this);
-        }
+
     }
 
     public override void MoveEnemy()
-    { 
+    {
+        Debug.Log("moveEnemy()");
+        Debug.Log("Normal transform.forward: " + (transform.localPosition + transform.forward).z
+            + ", Double Transform.forward: " + (transform.localPosition + transform.forward).z * 2);
+
         if ((int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward).x)
-                && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round((transform.localPosition + transform.forward).z))
+                && (int)Mathf.Round(player.transform.position.z) == (int) Mathf.Round ( (transform.localPosition + transform.forward*2).z ) )
         {
+            Debug.Log("Detected player");
             moving = true;
+
             transform.localPosition += transform.forward;
-            Destroy(player);
+            //Destroy(player);
+            GameManager.instance.GameOver();
+
             moving = false;
         }
     }

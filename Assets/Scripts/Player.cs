@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Player : MovingObject {
 
@@ -35,22 +36,24 @@ public class Player : MovingObject {
 		GUI.Label(new Rect(0, 0, 50, 50), text) ;
 	}
 
-	private void Update ()
+	protected override void Update ()
     {
         // Exit the function if it's not the player's turn
 		if (!GameManager.instance.playersTurn) return;
+
+        transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z)); 
 
         int horizontal = 0;     // Horizontal move direction
         int vertical = 0;       // Vertical move direction
 
         // Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
-        // horizontal = (int)(Input.GetAxisRaw("Horizontal"));
+        horizontal = (int)(Input.GetAxisRaw("Horizontal"));
         // Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
-        // vertical = (int)(Input.GetAxisRaw("Vertical"));
+        vertical = (int)(Input.GetAxisRaw("Vertical"));
 
-		#if UNITY_ANDROID
+        #if UNITY_ANDROID
 
-		if (Input.touchCount > 0)
+        if (Input.touchCount > 0)
 		{
 			//Store the first touch detected
 			Touch myTouch = Input.touches[0];
@@ -144,9 +147,14 @@ public class Player : MovingObject {
 		return couldBeSwipe && swipeTime < maxSwipeTime && swipeDist > minSwipeDist;
 	}
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "Guard(Clone)")
+            Destroy(collision.gameObject);
+    }
+
 	protected override void OnCantMove<T>(T component)
     {
 
     }
-
 }

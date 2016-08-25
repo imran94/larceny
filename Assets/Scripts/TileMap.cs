@@ -109,6 +109,9 @@ public class TileMap : MonoBehaviour {
         tiles[0, 5] = tileTypes[WALKABLE];
         tiles[0, 6] = tileTypes[WALKABLE];
 
+        tiles[1, 2] = tileTypes[WALKABLE];
+        tiles[1, 4] = tileTypes[WALKABLE];
+
         tiles[2, 1] = tileTypes[WALKABLE];
         tiles[2, 2] = tileTypes[WALKABLE];
         tiles[2, 3] = tileTypes[WALKABLE];
@@ -116,10 +119,15 @@ public class TileMap : MonoBehaviour {
         tiles[2, 5] = tileTypes[WALKABLE];
         tiles[2, 6] = tileTypes[WALKABLE];
 
+        tiles[3, 2] = tileTypes[WALKABLE];
+        tiles[3, 4] = tileTypes[WALKABLE];
+
         tiles[4, 2] = tileTypes[WALKABLE];
         tiles[4, 3] = tileTypes[WALKABLE];
         tiles[4, 4] = tileTypes[WALKABLE];
         tiles[4, 6] = tileTypes[WALKABLE];
+
+        tiles[5, 4] = tileTypes[WALKABLE];
 
         tiles[6, 1] = tileTypes[WALKABLE];
         tiles[6, 2] = tileTypes[WALKABLE];
@@ -133,10 +141,8 @@ public class TileMap : MonoBehaviour {
         tiles[5, 6] = tileTypes[WALKABLE];
         tiles[6, 6] = tileTypes[WALKABLE];
 
-        tiles[6, 7] = tileTypes[EXIT];
-
-
-
+        tiles[7, 2] = tileTypes[WALKABLE];
+        tiles[8, 2] = tileTypes[EXIT];
     }
 
     // Update is called once per frame

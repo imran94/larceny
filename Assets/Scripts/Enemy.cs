@@ -10,10 +10,10 @@ public abstract class Enemy : MovingObject {
     public bool moveVertically = false;
 
 	// Use this for initialization
-	protected override void Start () {
-        animator = GetComponent<Animator>();
-        base.Start();
-	}
+	//protected virtual void Start () {
+ //       animator = GetComponent<Animator>();
+ //       base.Start();
+	//}
 
     protected override void AttemptMove<T>(int xDir, int zDir)
     {
