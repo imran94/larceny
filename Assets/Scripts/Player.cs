@@ -41,7 +41,7 @@ public class Player : MovingObject {
         // Exit the function if it's not the player's turn
 		if (!GameManager.instance.playersTurn) return;
 
-        transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z)); 
+        transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
 
         int horizontal = 0;     // Horizontal move direction
         int vertical = 0;       // Vertical move direction
@@ -151,10 +151,5 @@ public class Player : MovingObject {
     {
         if (collision.gameObject.name == "Guard(Clone)")
             Destroy(collision.gameObject);
-    }
-
-	protected override void OnCantMove<T>(T component)
-    {
-
     }
 }

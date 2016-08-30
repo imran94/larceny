@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(this);
 
         player = GameObject.Find ("Player");
-		//player = (GameObject)Instantiate(Resources.Load("Player"));
 
         enemies = new List<Enemy>();
         
@@ -47,37 +46,41 @@ public class GameManager : MonoBehaviour {
 
 	void InitGame ()
 	{
-        generateLevel(1);
+        generateLevel(Loader.level);
     }
 	
-	// Update is called once per frame
 	void Update ()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
 
         if (player == null)
         { 
-            Time.timeScale = 0;
-            Debug.Log("Player has been destroyed");
+            //Time.timeScale = 0;
+            //Debug.Log("Player has been destroyed");
 
-            Destroy(GameObject.Find("TileMap"));
+            //Destroy(GameObject.Find("TileMap"));
 
             //InitGame();
             //return;
-            int sceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(sceneIndex);
+            //int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+            //SceneManager.LoadScene(sceneIndex);
+
+            //resetLvl();
         }
 
         if (playersTurn || enemiesMoving)
             return;
 
-        int x = (int)Mathf.Round (player.transform.position.x);
-		int z = (int)Mathf.Round (player.transform.position.z);
+        if (player != null)
+        {
+            int x = (int)Mathf.Round(player.transform.position.x);
+            int z = (int)Mathf.Round(player.transform.position.z);
 
-		if (TileMap.tiles [x, z].name == "Finish") 
-		{
-			levelComplete ();
-		}
+            if (TileMap.tiles[x, z].name == "Finish")
+            {
+                levelComplete();
+            }
+        }
 
         StartCoroutine(MoveEnemies());
 	}
@@ -94,6 +97,16 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
+        Time.timeScale = 0;
+        Debug.Log("Player has been destroyed");
+
+        Destroy(GameObject.Find("TileMap"));
+
+        //InitGame();
+        //return;
+        //int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        //SceneManager.LoadScene(sceneIndex);
+
         resetLvl();
     }
 
@@ -126,6 +139,9 @@ public class GameManager : MonoBehaviour {
 
     public void generateLevel(int level)
     {
+        if (player == null)
+            player = Instantiate(Resources.Load("Player")) as GameObject;
+
         tileScript.generateLevel(level);
 
         switch (level)
@@ -136,18 +152,20 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void generateLevel1()
+    void resetLvl()
     {
-        player.transform.position = new Vector3(0f, 3f, 0f);
+        //player.transform.position = new Vector3(0f, 3f, 0f);
 
         //GameObject go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(4f, 3f, 8f), new Quaternion(0, 180, 0, 0));
         //GameObject go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(4f, 3f, 8f), Quaternion.identity);
         //Enemy enemy = go.GetComponent<Guard>();
         //enemies.Add(enemy);
-        resetLvl();
+        //resetLvl();
+
+        generateLevel(Loader.level);
     }
 
-    void resetLvl()
+    void generateLevel1()
     {
         player.transform.position = new Vector3(0f, 3f, 0f);
 

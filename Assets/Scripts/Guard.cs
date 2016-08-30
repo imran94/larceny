@@ -4,16 +4,6 @@ using System;
 
 public class Guard : Enemy {
 
-    GameObject player;
-    bool moving;
-
-    // Use this for initialization
-    protected override void Start()
-    {
-        player = GameObject.Find ("Player");
-        moving = false;
-    }
-    
     // Update is called once per frame
     protected override void Update ()
     {
@@ -26,22 +16,13 @@ public class Guard : Enemy {
         Debug.Log("Normal transform.forward: " + (transform.localPosition + transform.forward).z
             + ", Double Transform.forward: " + (transform.localPosition + transform.forward).z * 2);
 
+        // if player detected
         if ((int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward).x)
                 && (int)Mathf.Round(player.transform.position.z) == (int) Mathf.Round ( (transform.localPosition + transform.forward*2).z ) )
         {
-            Debug.Log("Detected player");
-            moving = true;
-
-            transform.localPosition += transform.forward;
+            transform.localPosition += transform.forward * 2;
             //Destroy(player);
             GameManager.instance.GameOver();
-
-            moving = false;
         }
-    }
-
-
-    protected override void OnCantMove<T>(T component)
-    {
     }
 }
