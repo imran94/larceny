@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     public float turnDelay = 1f;
 	public static GameManager instance = null;
     public GameObject WinImg;
+    public GameObject PauseBtn;
 
     private GameObject player;
 	public bool playersTurn = true;
@@ -94,6 +95,7 @@ public class GameManager : MonoBehaviour {
 	{
         //resetLvl();
         WinImg.SetActive(true);
+        PauseBtn.SetActive(false);
     }
 
     public void GameOver()
