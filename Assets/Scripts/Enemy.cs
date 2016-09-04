@@ -23,13 +23,5 @@ public abstract class Enemy : MovingObject {
         base.AttemptMove<T>(xDir, zDir);
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (moving && collision.gameObject.name == "Player")
-        {
-            GameManager.instance.GameOver();
-        }
-    }
-
     abstract public void MoveEnemy();
 }

@@ -16,13 +16,9 @@ public class Guard : Enemy {
         if ((int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward).x)
                 && (int)Mathf.Round(player.transform.position.z) == (int) Mathf.Round ( (transform.localPosition + transform.forward*2).z ) )
         {
-            moving = true;
-
             transform.localPosition += transform.forward * 2;
             //Destroy(player);
-            //GameManager.instance.GameOver();
-
-            moving = false;
+            GameManager.instance.GameOver();
         }
     }
 }

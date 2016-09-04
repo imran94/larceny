@@ -19,9 +19,12 @@ public class Patrol : Enemy {
 
         if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
-            moving = true;
             transform.position = transform.localPosition + transform.forward * 2;
-            moving = false;
+
+            // if player detected
+            if ((int)Mathf.Round(player.transform.position.x) == (int)end.x
+                && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).z))
+                GameManager.instance.GameOver();
         }
         else
         {
