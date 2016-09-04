@@ -9,11 +9,14 @@ public abstract class Enemy : MovingObject {
     public bool moveHorizontally = false;
     public bool moveVertically = false;
 
-	// Use this for initialization
-	//protected virtual void Start () {
- //       animator = GetComponent<Animator>();
- //       base.Start();
-	//}
+    protected GameObject player;
+
+    protected override void Start()
+    {
+        animator = GetComponent<Animator>();
+        player = GameObject.Find("Player");
+        base.Start();
+    }
 
     protected override void AttemptMove<T>(int xDir, int zDir)
     {
@@ -21,5 +24,4 @@ public abstract class Enemy : MovingObject {
     }
 
     abstract public void MoveEnemy();
-    abstract protected override void OnCantMove<T>(T component);
 }

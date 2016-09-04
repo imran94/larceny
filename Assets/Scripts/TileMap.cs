@@ -13,8 +13,8 @@ public class TileMap : MonoBehaviour {
 	const int NONWALKABLE = 1;
 	const int EXIT = 2;
 
-    int mapSizeX = 10;
-    int mapSizeZ = 10;
+    int mapSizeX;
+    int mapSizeZ;
 
 	private Transform tileMap;
 	private List <Vector3> tilePositions = new List<Vector3> ();
@@ -53,25 +53,9 @@ public class TileMap : MonoBehaviour {
         }
     }
 
-    public void generateLevel(int level)
+    void genericLevel()
     {
-        generateTileData();
-
-        switch (level)
-        {
-            case 1:
-                generateLevel1();
-                break;
-        }
-
-        generateMapVisual();
-    }
-
-    void generateLevel1()
-    {
-
         tiles = new TileType[mapSizeX, mapSizeZ];
-        Debug.Log(tileTypes.Length);
 
         for (int x = 0; x < mapSizeX; x++)
         {
@@ -81,68 +65,155 @@ public class TileMap : MonoBehaviour {
                 tiles[x, z] = tileTypes[NONWALKABLE];
             }
         }
+    }
 
-        //tiles[4, 4] = tileTypes[WALKABLE];
-        //tiles[4, 5] = tileTypes[WALKABLE];
-        //tiles[4, 6] = tileTypes[WALKABLE];
-        //tiles[4, 7] = tileTypes[WALKABLE];
-        //tiles[4, 8] = tileTypes[WALKABLE];
+    public void generateLevel(int level)
+    {
+        generateTileData();
 
-        //tiles[5, 8] = tileTypes[WALKABLE];
-        //tiles[6, 8] = tileTypes[WALKABLE];
-        //tiles[7, 8] = tileTypes[WALKABLE];
+        switch (level)
+        {
+            case 1:
+                generateLevel1();
+                break;
+            case 2:
+                generateLevel2();
+                break;
+            case 3:
+                generateLevel3();
+                break;
+            case 4:
+                generateLevel4();
+                break;
+            case 5:
+                generateLevel5();
+                break;
+        }
 
-        //tiles[8, 8] = tileTypes[EXIT];
+        generateMapVisual();
+    }
 
-        tiles[0, 0] = tileTypes[WALKABLE];
-        tiles[1, 0] = tileTypes[WALKABLE];
-        tiles[2, 0] = tileTypes[WALKABLE];
-        tiles[3, 0] = tileTypes[WALKABLE];
-        tiles[4, 0] = tileTypes[WALKABLE];
-        tiles[5, 0] = tileTypes[WALKABLE];
-        tiles[6, 0] = tileTypes[WALKABLE];
+    void generateLevel1()
+    {
+        mapSizeX = 7;
+        mapSizeZ = 3;
 
-        tiles[0, 1] = tileTypes[WALKABLE];
-        tiles[0, 2] = tileTypes[WALKABLE];
-        tiles[0, 3] = tileTypes[WALKABLE];
-        tiles[0, 4] = tileTypes[WALKABLE];
-        tiles[0, 5] = tileTypes[WALKABLE];
-        tiles[0, 6] = tileTypes[WALKABLE];
+        genericLevel();
 
-        tiles[1, 2] = tileTypes[WALKABLE];
-        tiles[1, 4] = tileTypes[WALKABLE];
+        for (int i = 1; i < 5; i++)
+        {
+            tiles[i, 1] = tileTypes[WALKABLE];
+        }
 
-        tiles[2, 1] = tileTypes[WALKABLE];
-        tiles[2, 2] = tileTypes[WALKABLE];
+        tiles[5, 1] = tileTypes[EXIT];
+    }
+
+    void generateLevel2()
+    {
+        mapSizeX = 9;
+        mapSizeZ = 3;
+
+        genericLevel();
+
+        for (int i = 1; i < 7; i++)
+            tiles[i, 1] = tileTypes[WALKABLE];
+
+        tiles[7, 1] = tileTypes[EXIT];
+    }
+
+    void generateLevel3()
+    {
+        mapSizeX = 6;
+        mapSizeZ = 9;
+
+        genericLevel();
+        
+        for (int i = 3; i < 8; i++)
+            tiles[1, i] = tileTypes[WALKABLE];
+
         tiles[2, 3] = tileTypes[WALKABLE];
-        tiles[2, 4] = tileTypes[WALKABLE];
         tiles[2, 5] = tileTypes[WALKABLE];
-        tiles[2, 6] = tileTypes[WALKABLE];
+        tiles[2, 7] = tileTypes[WALKABLE];
 
-        tiles[3, 2] = tileTypes[WALKABLE];
-        tiles[3, 4] = tileTypes[WALKABLE];
+        for (int i = 1; i < 8; i++)
+            tiles[3, i] = tileTypes[WALKABLE];
 
-        tiles[4, 2] = tileTypes[WALKABLE];
-        tiles[4, 3] = tileTypes[WALKABLE];
-        tiles[4, 4] = tileTypes[WALKABLE];
-        tiles[4, 6] = tileTypes[WALKABLE];
+        tiles[4, 5] = tileTypes[WALKABLE];
+        tiles[5, 5] = tileTypes[EXIT];
+    }
 
-        tiles[5, 4] = tileTypes[WALKABLE];
+    void generateLevel4()
+    {
+        mapSizeX = mapSizeZ = 12;
+        genericLevel();
 
+        tiles[1, 1] = tileTypes[WALKABLE];
+        tiles[2, 1] = tileTypes[WALKABLE];
+        tiles[3, 1] = tileTypes[WALKABLE];
+        tiles[4, 1] = tileTypes[WALKABLE];
+        tiles[5, 1] = tileTypes[WALKABLE];
         tiles[6, 1] = tileTypes[WALKABLE];
-        tiles[6, 2] = tileTypes[WALKABLE];
-        tiles[6, 3] = tileTypes[WALKABLE];
-        tiles[6, 4] = tileTypes[WALKABLE];
-        tiles[6, 5] = tileTypes[WALKABLE];
-        tiles[6, 6] = tileTypes[WALKABLE];
+        tiles[7, 1] = tileTypes[WALKABLE];
 
+        tiles[1, 1] = tileTypes[WALKABLE];
+        tiles[1, 2] = tileTypes[WALKABLE];
+        tiles[1, 3] = tileTypes[WALKABLE];
+        tiles[1, 4] = tileTypes[WALKABLE];
+        tiles[1, 5] = tileTypes[WALKABLE];
         tiles[1, 6] = tileTypes[WALKABLE];
-        tiles[3, 6] = tileTypes[WALKABLE];
-        tiles[5, 6] = tileTypes[WALKABLE];
-        tiles[6, 6] = tileTypes[WALKABLE];
+        tiles[1, 7] = tileTypes[WALKABLE];
 
-        tiles[7, 2] = tileTypes[WALKABLE];
-        tiles[8, 2] = tileTypes[EXIT];
+        tiles[2, 3] = tileTypes[WALKABLE];
+        tiles[3, 3] = tileTypes[WALKABLE];
+        tiles[4, 3] = tileTypes[WALKABLE];
+        tiles[5, 3] = tileTypes[WALKABLE];
+        tiles[7, 3] = tileTypes[WALKABLE];
+
+        tiles[2, 5] = tileTypes[WALKABLE];
+        tiles[3, 5] = tileTypes[WALKABLE];
+        tiles[4, 5] = tileTypes[WALKABLE];
+        tiles[5, 5] = tileTypes[WALKABLE];
+        tiles[6, 5] = tileTypes[WALKABLE];
+        tiles[7, 5] = tileTypes[WALKABLE];
+
+        tiles[2, 7] = tileTypes[WALKABLE];
+        tiles[3, 7] = tileTypes[WALKABLE];
+        tiles[4, 7] = tileTypes[WALKABLE];
+        tiles[5, 7] = tileTypes[WALKABLE];
+        tiles[6, 7] = tileTypes[WALKABLE];
+        tiles[7, 7] = tileTypes[WALKABLE];
+
+        tiles[8, 3] = tileTypes[WALKABLE];
+        tiles[9, 3] = tileTypes[EXIT];
+    }
+
+    void generateLevel5()
+    {
+        mapSizeX = 11;
+        mapSizeZ = 10;
+
+        genericLevel();
+
+        tiles[5, 1] = tileTypes[WALKABLE];
+        tiles[5, 2] = tileTypes[WALKABLE];
+
+        for (int i = 1; i < 10; i++)
+        {
+            tiles[i, 3] = tileTypes[WALKABLE];
+            tiles[i, 7] = tileTypes[WALKABLE];
+        }
+
+        for (int i = 4; i < 7; i++)
+        {
+            tiles[1, i] = tileTypes[WALKABLE];
+            tiles[9, i] = tileTypes[WALKABLE];
+        }
+
+        for (int i = 2; i < 8; i++)
+            tiles[i, 5] = tileTypes[WALKABLE];
+
+        tiles[5, 8] = tileTypes[WALKABLE];
+        tiles[5, 9] = tileTypes[EXIT];
     }
 
     // Update is called once per frame
