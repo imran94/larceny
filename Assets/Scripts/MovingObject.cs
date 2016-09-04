@@ -4,12 +4,13 @@ using System.Collections;
 //The abstract keyword enables you to create classes and class members that are incomplete and must be implemented in a derived class.
 public abstract class MovingObject : MonoBehaviour
 {
-    public float moveTime = 0.1f;           //Time it will take object to move, in seconds.
+    public float moveTime = 0.5f;           //Time it will take object to move, in seconds.
     public LayerMask blockingLayer;         //Layer on which collision will be checked.
 
     private BoxCollider boxCollider;      //The BoxCollider component attached to this object.
     private Rigidbody rb;               //The Rigidbody component attached to this object.
     private float inverseMoveTime;          //Used to make movement more efficient.
+    protected bool moving;
 
     //Protected, virtual functions can be overridden by inheriting classes.
     protected virtual void Start()
@@ -22,6 +23,8 @@ public abstract class MovingObject : MonoBehaviour
 
         //By storing the reciprocal of the move time we can use it by multiplying instead of dividing, this is more efficient.
         inverseMoveTime = 1f / moveTime;
+
+        moving = false;
     }
 
     protected virtual void Update()
@@ -29,20 +32,25 @@ public abstract class MovingObject : MonoBehaviour
 
     }
 
-    protected bool Move(int xDir, int zDir)
+    protected virtual bool Move(int xDir, int zDir)
     {
 
         //Store start position to move from, based on objects current transform position.
         Vector3 start = transform.position;
+        start.x = Mathf.Round(start.x);
+        start.z = Mathf.Round(start.z);
 
         // Calculate end position based on the direction parameters passed in when calling Move.
         Vector3 end = start + new Vector3(xDir, 0f, zDir);
-        
-		if (TileMap.tiles[(int) Mathf.Round (end.x), (int) Mathf.Round (end.z)].isWalkable)
-        {
-			GameManager.instance.playersTurn = false;
-			transform.position = start + new Vector3(xDir * 2, 0f, zDir * 2);
+        end.x = Mathf.Round(end.x);
+        end.z = Mathf.Round(end.z);
 
+		if (TileMap.tiles[(int) end.x, (int) end.z].isWalkable)
+        {
+            moving = true;
+            transform.position = start + new Vector3(xDir * 2, 0f, zDir * 2);
+            moving = false;
+            GameManager.instance.playersTurn = false;
             //StartCoroutine(SmoothMovement(end));
             return true;
         }
@@ -93,6 +101,7 @@ public abstract class MovingObject : MonoBehaviour
         //Square magnitude is used instead of magnitude because it's computationally cheaper.
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
+
         //While that distance is greater than a very small amount (Epsilon, almost zero):
         while (sqrRemainingDistance > float.Epsilon)
         {
@@ -129,16 +138,5 @@ public abstract class MovingObject : MonoBehaviour
 
         //Get a component reference to the component of type T attached to the object that was hit
         T hitComponent = hit.transform.GetComponent<T>();
-
-        //If canMove is false and hitComponent is not equal to null, meaning MovingObject is blocked and has hit something it can interact with.
-        if (!canMove && hitComponent != null)
-
-            //Call the OnCantMove function and pass it hitComponent as a parameter.
-            OnCantMove(hitComponent);
     }
-
-    //The abstract modifier indicates that the thing being modified has a missing or incomplete implementation.
-    //OnCantMove will be overriden by functions in the inheriting classes.
-    protected abstract void OnCantMove<T>(T component)
-        where T : Component;
 }
