@@ -19,8 +19,9 @@ public class Patrol : Enemy {
 
         if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
+            moving = true;
             transform.position = transform.localPosition + transform.forward * 2;
-
+            moving = false;
         }
         else
         {

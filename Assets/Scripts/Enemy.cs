@@ -25,7 +25,7 @@ public abstract class Enemy : MovingObject {
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!GameManager.instance.playersTurn && collision.gameObject.name == "Player")
+        if (moving && collision.gameObject.name == "Player")
         {
             GameManager.instance.GameOver();
         }

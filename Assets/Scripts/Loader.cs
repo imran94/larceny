@@ -4,7 +4,7 @@ using System.Collections;
 public class Loader : MonoBehaviour {
 
 	public GameObject tileMap;
-    public static int level = 4;
+    public static int level = 3;
 
 	// Use this for initialization
 	void Awake () 

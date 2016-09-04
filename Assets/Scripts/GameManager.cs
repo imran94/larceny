@@ -146,6 +146,13 @@ public class GameManager : MonoBehaviour {
 
         tileScript.generateLevel(level);
 
+        foreach (Enemy e in enemies)
+        {
+            if (e != null)
+                Destroy(e.gameObject);
+        }
+        enemies.Clear();
+
         switch (level)
         {
             case 1:
@@ -169,31 +176,29 @@ public class GameManager : MonoBehaviour {
 
     void resetLvl()
     {
-        //player.transform.position = new Vector3(0f, 3f, 0f);
-
-        //GameObject go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(4f, 3f, 8f), new Quaternion(0, 180, 0, 0));
-        //GameObject go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(4f, 3f, 8f), Quaternion.identity);
-        //Enemy enemy = go.GetComponent<Guard>();
-        //enemies.Add(enemy);
-        //resetLvl();
-
         generateLevel(Loader.level);
     }
 
-    void generateLevel1() { }
-    void generateLevel2() { }
-    void generateLevel3() { }
+    void generateLevel1()
+    {
+        player.transform.position = new Vector3(1f, 3f, 1f);
+    }
+
+    void generateLevel2()
+    {
+        player.transform.position = new Vector3(1f, 3f, 1f);
+        instantiateEnemy("Guard", 6f, 1f, 90f);
+    }
+
+    void generateLevel3()
+    {
+        player.transform.position = new Vector3(3f, 3f, 1f);
+        instantiateEnemy("Guard", 3f, 7f, 180f);
+    }
 
     void generateLevel4()
     {
         player.transform.position = new Vector3(1f, 3f, 1f);
-
-        foreach (Enemy e in enemies)
-        {
-            if (e != null)
-                Destroy(e.gameObject);
-        }
-        enemies.Clear();
 
         instantiateEnemy("Patrol", 1f, 7f, 90f);
         instantiateEnemy("Guard", 3f, 3f, 180f);
@@ -204,7 +209,14 @@ public class GameManager : MonoBehaviour {
         instantiateEnemy("Guard", 7f, 5f, 180f);
     }
 
-    void generateLevel5() { }
+    void generateLevel5()
+    {
+        player.transform.position = new Vector3(5f, 3f, 1f);
+
+        instantiateEnemy("Patrol", 3f, 3f, -90f);
+        instantiateEnemy("Patrol", 3f, 5f, -90f);
+        instantiateEnemy("Patrol", 7f, 7f, 90f);
+    }
 
     void instantiateEnemy(string type, float x, float z, float angleY)
     {

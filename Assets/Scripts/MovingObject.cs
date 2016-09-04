@@ -47,8 +47,9 @@ public abstract class MovingObject : MonoBehaviour
 
 		if (TileMap.tiles[(int) end.x, (int) end.z].isWalkable)
         {
+            moving = true;
             transform.position = start + new Vector3(xDir * 2, 0f, zDir * 2);
-
+            moving = false;
             GameManager.instance.playersTurn = false;
             //StartCoroutine(SmoothMovement(end));
             return true;
