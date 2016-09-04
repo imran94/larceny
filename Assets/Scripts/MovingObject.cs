@@ -4,12 +4,13 @@ using System.Collections;
 //The abstract keyword enables you to create classes and class members that are incomplete and must be implemented in a derived class.
 public abstract class MovingObject : MonoBehaviour
 {
-    public float moveTime = 0.1f;           //Time it will take object to move, in seconds.
+    public float moveTime = 0.5f;           //Time it will take object to move, in seconds.
     public LayerMask blockingLayer;         //Layer on which collision will be checked.
 
     private BoxCollider boxCollider;      //The BoxCollider component attached to this object.
     private Rigidbody rb;               //The Rigidbody component attached to this object.
     private float inverseMoveTime;          //Used to make movement more efficient.
+    protected bool moving;
 
     //Protected, virtual functions can be overridden by inheriting classes.
     protected virtual void Start()
@@ -22,6 +23,8 @@ public abstract class MovingObject : MonoBehaviour
 
         //By storing the reciprocal of the move time we can use it by multiplying instead of dividing, this is more efficient.
         inverseMoveTime = 1f / moveTime;
+
+        moving = false;
     }
 
     protected virtual void Update()
@@ -38,15 +41,15 @@ public abstract class MovingObject : MonoBehaviour
         start.z = Mathf.Round(start.z);
 
         // Calculate end position based on the direction parameters passed in when calling Move.
-        Vector3 end = start + new Vector3(xDir, 0f, zDir) * 2;
+        Vector3 end = start + new Vector3(xDir, 0f, zDir);
         end.x = Mathf.Round(end.x);
         end.z = Mathf.Round(end.z);
 
 		if (TileMap.tiles[(int) end.x, (int) end.z].isWalkable)
         {
-			GameManager.instance.playersTurn = false;
             transform.position = start + new Vector3(xDir * 2, 0f, zDir * 2);
 
+            GameManager.instance.playersTurn = false;
             //StartCoroutine(SmoothMovement(end));
             return true;
         }

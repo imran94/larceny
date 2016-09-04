@@ -15,13 +15,20 @@ public abstract class Enemy : MovingObject {
     {
         animator = GetComponent<Animator>();
         player = GameObject.Find("Player");
-
         base.Start();
     }
 
     protected override void AttemptMove<T>(int xDir, int zDir)
     {
         base.AttemptMove<T>(xDir, zDir);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!GameManager.instance.playersTurn && collision.gameObject.name == "Player")
+        {
+            GameManager.instance.GameOver();
+        }
     }
 
     abstract public void MoveEnemy();

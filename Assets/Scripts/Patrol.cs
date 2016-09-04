@@ -12,22 +12,19 @@ public class Patrol : Enemy {
 
     public override void MoveEnemy()
     {
-        Vector3 end = transform.localPosition + transform.forward * 2;
+        Vector3 end = transform.localPosition + transform.forward;
         end.x = Mathf.Round(end.x);
         end.z = Mathf.Round(end.z);
+        Debug.Log("Patrol forward: " + end.x + ", " + end.z);
 
-        if (TileMap.tiles[(int)end.x, (int)end.x].isWalkable)
+        if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
-            transform.position = end;
+            transform.position = transform.localPosition + transform.forward * 2;
+
         }
         else
         {
             transform.Rotate(0f, 180f, 0f);
         }
-    }
-
-    protected override bool Move(int xDir, int zDir)
-    {
-
     }
 }

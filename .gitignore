@@ -1,7 +1,7 @@
-/Library/*
-/Build/*
-/Temp/*
-/obj/*
+/Library/
+/Build/
+/Temp/
+/obj/
 
 /Larceny.CSharp.csproj
 *.unityproj

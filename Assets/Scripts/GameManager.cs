@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
+        float currentTime = Time.timeScale;
         Time.timeScale = 0;
         Debug.Log("Player has been destroyed");
 
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour {
         //SceneManager.LoadScene(sceneIndex);
 
         resetLvl();
+        Time.timeScale = currentTime;
     }
 
     IEnumerator MoveEnemies()
@@ -129,7 +131,7 @@ public class GameManager : MonoBehaviour {
             {
                 Debug.Log("moving enemiy");
                 enemy.MoveEnemy();
-                // yield return new WaitForSeconds(enemy.moveTime);
+                yield return new WaitForSeconds(enemy.moveTime);
             }
         }
 
@@ -149,6 +151,19 @@ public class GameManager : MonoBehaviour {
             case 1:
                 generateLevel1();
                 break;
+            case 2:
+                generateLevel2();
+                break;
+            case 3:
+                generateLevel3();
+                break;
+            case 4:
+                generateLevel4();
+                break;
+            case 5:
+                generateLevel5();
+                break;
+
         }
     }
 
@@ -165,9 +180,13 @@ public class GameManager : MonoBehaviour {
         generateLevel(Loader.level);
     }
 
-    void generateLevel1()
+    void generateLevel1() { }
+    void generateLevel2() { }
+    void generateLevel3() { }
+
+    void generateLevel4()
     {
-        player.transform.position = new Vector3(0f, 3f, 0f);
+        player.transform.position = new Vector3(1f, 3f, 1f);
 
         foreach (Enemy e in enemies)
         {
@@ -176,38 +195,22 @@ public class GameManager : MonoBehaviour {
         }
         enemies.Clear();
 
-        GameObject go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(0f, 3f, 6f), Quaternion.identity);
-        go.transform.Rotate(0f, 90f, 0f);
-        Enemy enemy = go.GetComponent<Guard>();
-        enemies.Add(enemy);
+        instantiateEnemy("Patrol", 1f, 7f, 90f);
+        instantiateEnemy("Guard", 3f, 3f, 180f);
+        instantiateEnemy("Guard", 3f, 5f, 180f);
+        instantiateEnemy("Guard", 5f, 3f, -90f);
+        instantiateEnemy("Guard", 5f, 5f, -90f);
+        instantiateEnemy("Guard", 7f, 1f, 0f);
+        instantiateEnemy("Guard", 7f, 5f, 180f);
+    }
 
-        go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(2f, 3f, 2f), Quaternion.identity);
-        go.transform.Rotate(0f, 180f, 0f);
-        enemy = go.GetComponent<Guard>();
-        enemies.Add(enemy);
+    void generateLevel5() { }
 
-        go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(2f, 3f, 4f), Quaternion.identity);
-        go.transform.Rotate(0f, 180f, 0f);
-        enemy = go.GetComponent<Guard>();
-        enemies.Add(enemy);
-
-        go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(4f, 3f, 2f), Quaternion.identity);
-        go.transform.Rotate(0f, 90f, 0f);
-        enemy = go.GetComponent<Guard>();
-        enemies.Add(enemy);
-
-        go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(4f, 3f, 4f), Quaternion.identity);
-        go.transform.Rotate(0f, 90f, 0f);
-        enemy = go.GetComponent<Guard>();
-        enemies.Add(enemy);
-
-        go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(6f, 3f, 0f), Quaternion.identity);
-        enemy = go.GetComponent<Guard>();
-        enemies.Add(enemy);
-
-        go = (GameObject)Instantiate(Resources.Load("Guard"), new Vector3(6f, 3f, 4f), Quaternion.identity);
-        go.transform.Rotate(0f, 180f, 0f);
-        enemy = go.GetComponent<Guard>();
+    void instantiateEnemy(string type, float x, float z, float angleY)
+    {
+        GameObject go = (GameObject)Instantiate(Resources.Load(type), new Vector3(x, 3f, z), Quaternion.identity);
+        go.transform.Rotate(0f, angleY, 0f);
+        Enemy enemy = go.GetComponent(type) as Enemy;
         enemies.Add(enemy);
     }
 }

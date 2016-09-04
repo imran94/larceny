@@ -149,7 +149,10 @@ public class Player : MovingObject {
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Guard(Clone)")
+        if (GameManager.instance.playersTurn &&
+            (collision.gameObject.name == "Guard(Clone)" || collision.gameObject.name == "Patrol(Clone)"))
+        {
             Destroy(collision.gameObject);
+        }
     }
 }
