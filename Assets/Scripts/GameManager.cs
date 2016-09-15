@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour {
     void generateLevel2()
     {
         player.transform.position = new Vector3(1f, 3f, 1f);
-        instantiateEnemy("Guard", 6f, 1f, 90f);
+        instantiateEnemy("Guard", 5f, 1f, 90f);
     }
 
     void generateLevel3()
