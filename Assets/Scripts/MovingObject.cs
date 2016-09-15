@@ -12,6 +12,8 @@ public abstract class MovingObject : MonoBehaviour
     private float inverseMoveTime;          //Used to make movement more efficient.
     protected bool moving;
 
+    public float speed;
+
     //Protected, virtual functions can be overridden by inheriting classes.
     protected virtual void Start()
     {
@@ -25,6 +27,7 @@ public abstract class MovingObject : MonoBehaviour
         inverseMoveTime = 1f / moveTime;
 
         moving = false;
+        speed = 0.2f;
     }
 
     protected virtual void Update()
@@ -45,12 +48,13 @@ public abstract class MovingObject : MonoBehaviour
         end.x = Mathf.Round(end.x);
         end.z = Mathf.Round(end.z);
 
-		if (TileMap.tiles[(int) end.x, (int) end.z].isWalkable)
+        if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
             moving = true;
             transform.position = start + new Vector3(xDir * 2, 0f, zDir * 2);
             moving = false;
             GameManager.instance.playersTurn = false;
+
             //StartCoroutine(SmoothMovement(end));
             return true;
         }
@@ -97,27 +101,27 @@ public abstract class MovingObject : MonoBehaviour
     //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(Vector3 end)
     {
-        //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter. 
-        //Square magnitude is used instead of magnitude because it's computationally cheaper.
-        float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+        Vector3 speedX = new Vector3(speed, 0f, 0f);
+        Vector3 speedZ = new Vector3(0f, 0f, speed);
 
-
-        //While that distance is greater than a very small amount (Epsilon, almost zero):
-        while (sqrRemainingDistance > float.Epsilon)
+        if (end.x - transform.position.x > 0)
         {
-            //Find a new position proportionally closer to the end, based on the moveTime
-            Vector3 newPosition = Vector3.MoveTowards(transform.position, end, inverseMoveTime * Time.deltaTime);
+            float distance = end.x - transform.position.x;
             
-            //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
-            rb.MovePosition(newPosition);
 
-            //Recalculate the remaining distance after moving.
-            sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+            while (distance > 0)
+            {
+                transform.position += speedX;
 
-            //Return and loop until sqrRemainingDistance is close enough to zero to end the function
-            yield return null;
+                yield return null;
+            }
+        }
+        else
+        {
+
         }
     }
+
 
 
     //The virtual keyword means AttemptMove can be overridden by inheriting classes using the override keyword.
