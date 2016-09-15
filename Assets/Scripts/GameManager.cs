@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour {
         InitGame ();
 	}
 
-	void InitGame ()
+	public void InitGame ()
 	{
         generateLevel(Loader.level);
     }
@@ -96,7 +96,6 @@ public class GameManager : MonoBehaviour {
 
 	public void levelComplete()
 	{
-        //resetLvl();
         WinImg.SetActive(true);
         PauseBtn.SetActive(false);
     }
