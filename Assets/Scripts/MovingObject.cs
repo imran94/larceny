@@ -59,6 +59,18 @@ public abstract class MovingObject : MonoBehaviour
         return false;
     }
 
+    protected IEnumerator SmoothMovement(Vector3 end)
+    {
+        float remainingDistance = (transform.position - end).magnitude;
+
+        while (remainingDistance > 0.01f)
+        {
+            Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
+            rb.MovePosition(newPosition);
+            remainingDistance = (transform.position - end).magnitude;
+            yield return null;
+        }
+    }
 
     //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(int xDir, int zDir, Vector3 end)
@@ -89,6 +101,17 @@ public abstract class MovingObject : MonoBehaviour
         }
 
         GameManager.instance.playersTurn = false;
+    }
+
+    protected IEnumerator Rotate(float rotationAmount)
+    {
+        Quaternion finalRotation = Quaternion.Euler(0, rotationAmount, 0) * transform.rotation;
+
+        while (transform.rotation != finalRotation)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, finalRotation, Time.deltaTime * speed);
+            yield return 0;
+        }
     }
 
     //The virtual keyword means AttemptMove can be overridden by inheriting classes using the override keyword.

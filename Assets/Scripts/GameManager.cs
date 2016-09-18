@@ -200,7 +200,7 @@ public class GameManager : MonoBehaviour {
     {
         player.transform.position = new Vector3(1f, 3f, 1f);
 
-        instantiateEnemy("Patrol", 1f, 7f, 90f);
+        instantiateEnemy("Guard", 1f, 7f, 90f);
         instantiateEnemy("Guard", 3f, 3f, 180f);
         instantiateEnemy("Guard", 3f, 5f, 180f);
         instantiateEnemy("Guard", 5f, 3f, -90f);
