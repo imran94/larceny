@@ -12,13 +12,20 @@ public class Guard : Enemy {
 
     public override void MoveEnemy()
     {
-        // if player detected
-        if ((int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward).x)
-                && (int)Mathf.Round(player.transform.position.z) == (int) Mathf.Round ( (transform.localPosition + transform.forward*2).z ) )
+        Vector3 end = transform.localPosition + transform.forward;
+        end.x = Mathf.Round(end.x);
+        end.z = Mathf.Round(end.z);
+
+        if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
-            transform.localPosition += transform.forward * 2;
-            //Destroy(player);
-            GameManager.instance.GameOver();
+            // if player detected
+            if ((int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward).x)
+                    && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).z))
+            {
+                //transform.localPosition += transform.forward * 2;
+                Vector3 moveTo = transform.localPosition + transform.forward * 2;
+                StartCoroutine(SmoothMovement(0, 1, moveTo));
+            }
         }
     }
 }

@@ -6,11 +6,12 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
     public float levelStartDelay = 2f;
-    public float turnDelay = 1f;
+    public float turnDelay = 3f;
 	public static GameManager instance = null;
     public GameObject WinImg;
 
     private GameObject player;
+    private Player playerScript;
 	public bool playersTurn = true;
 
     public GameObject tileMap;
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour {
 
 
         player = GameObject.Find ("Player");
+        playerScript = player.GetComponent<Player>();
 
         enemies = new List<Enemy>();
         
@@ -71,9 +73,9 @@ public class GameManager : MonoBehaviour {
             //resetLvl();
         }
 
-        if (playersTurn || enemiesMoving)
-            return;
+        if (playersTurn || enemiesMoving) return;
 
+        Debug.Log("GameManager Update continuing");
         if (player != null)
         {
             int x = (int)Mathf.Round(player.transform.position.x);
@@ -118,29 +120,26 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator MoveEnemies()
     {
+        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(MovingObject.moveTime);
         enemiesMoving = true;
 
-        if (enemies.Count == 0)
-        {
-            Debug.Log("No enemies");
-            yield return new WaitForSeconds(turnDelay);
-        }
-
-        yield return new WaitForSeconds(turnDelay);
-
-        Debug.Log(enemies.Count);
         foreach (Enemy enemy in enemies.ToArray())
         {
             if (enemy != null)
             {
-                Debug.Log("moving enemiy");
                 enemy.MoveEnemy();
-                yield return new WaitForSeconds(enemy.moveTime);
+                //yield return new WaitForSeconds(MovingObject.moveTime);
             }
         }
 
+        //yield return new WaitForSeconds(turnDelay);
+
         playersTurn = true;
+        playerScript.input = true;
         enemiesMoving = false;
+
+        Debug.Log("End of turn");
     }
 
     public void generateLevel(int level)

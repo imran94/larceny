@@ -2,7 +2,8 @@
 using System.Collections;
 using System;
 
-public abstract class Enemy : MovingObject {
+public abstract class Enemy : MovingObject
+{
 
     private Animator animator;
 
@@ -21,6 +22,15 @@ public abstract class Enemy : MovingObject {
     protected override void AttemptMove<T>(int xDir, int zDir)
     {
         base.AttemptMove<T>(xDir, zDir);
+    }
+
+    void onCollisionEnter(Collision collision)
+    {
+        if (!GameManager.instance.playersTurn && collision.gameObject.name == "Player")
+        {
+            Debug.Log("Collided with player");
+            GameManager.instance.GameOver();
+        }
     }
 
     abstract public void MoveEnemy();
