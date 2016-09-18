@@ -13,12 +13,12 @@ public class GameManager : MonoBehaviour {
     private GameObject player;
     private Player playerScript;
 	public bool playersTurn = true;
+    public bool enemiesMoving;
 
     public GameObject tileMap;
     public TileMap tileScript;
 
     private List<Enemy> enemies;
-    private bool enemiesMoving;
 
     // Use this for initialization
     void Awake () 
@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour {
 	void Update ()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
+        if (Input.GetKeyDown(KeyCode.R)) { resetLvl(); }
 
         if (player == null)
         { 
@@ -75,7 +76,6 @@ public class GameManager : MonoBehaviour {
 
         if (playersTurn || enemiesMoving) return;
 
-        Debug.Log("GameManager Update continuing");
         if (player != null)
         {
             int x = (int)Mathf.Round(player.transform.position.x);
@@ -120,8 +120,7 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator MoveEnemies()
     {
-        yield return new WaitForSeconds(0.1f);
-        //yield return new WaitForSeconds(MovingObject.moveTime);
+        yield return new WaitForSeconds(MovingObject.moveTime);
         enemiesMoving = true;
 
         foreach (Enemy enemy in enemies.ToArray())
@@ -129,17 +128,15 @@ public class GameManager : MonoBehaviour {
             if (enemy != null)
             {
                 enemy.MoveEnemy();
-                //yield return new WaitForSeconds(MovingObject.moveTime);
+                yield return new WaitForSeconds(MovingObject.moveTime);
             }
         }
 
-        //yield return new WaitForSeconds(turnDelay);
+        yield return new WaitForSeconds(turnDelay);
 
         playersTurn = true;
         playerScript.input = true;
         enemiesMoving = false;
-
-        Debug.Log("End of turn");
     }
 
     public void generateLevel(int level)

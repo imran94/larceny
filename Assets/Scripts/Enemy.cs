@@ -4,17 +4,10 @@ using System;
 
 public abstract class Enemy : MovingObject
 {
-
-    private Animator animator;
-
-    public bool moveHorizontally = false;
-    public bool moveVertically = false;
-
     protected GameObject player;
 
     protected override void Start()
     {
-        animator = GetComponent<Animator>();
         player = GameObject.Find("Player");
         base.Start();
     }
@@ -24,11 +17,11 @@ public abstract class Enemy : MovingObject
         base.AttemptMove<T>(xDir, zDir);
     }
 
-    void onCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
-        if (!GameManager.instance.playersTurn && collision.gameObject.name == "Player")
+        if (!GameManager.instance.playersTurn && GameManager.instance.enemiesMoving
+            && collision.gameObject.name == "Player")
         {
-            Debug.Log("Collided with player");
             GameManager.instance.GameOver();
         }
     }

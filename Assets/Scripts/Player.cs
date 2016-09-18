@@ -154,7 +154,7 @@ public class Player : MovingObject {
 
     void OnCollisionEnter(Collision collision)
     {
-        if (GameManager.instance.playersTurn &&
+        if (GameManager.instance.playersTurn && !GameManager.instance.enemiesMoving &&
             (collision.gameObject.name == "Guard(Clone)" || collision.gameObject.name == "Patrol(Clone)"))
         {
             Debug.Log("Collision");

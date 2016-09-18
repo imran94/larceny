@@ -19,7 +19,7 @@ public abstract class MovingObject : MonoBehaviour
     {
         //Get a component reference to this object's BoxCollider2D
         boxCollider = GetComponent<BoxCollider>();
-
+        
         //Get a component reference to this object's Rigidbody2D
         rb = GetComponent<Rigidbody>();
         //rb.isKinematic = true;
@@ -63,10 +63,8 @@ public abstract class MovingObject : MonoBehaviour
     //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(int xDir, int zDir, Vector3 end)
     {
-        Debug.Log("xDir: " + xDir + ", zDir: " + zDir);
         if (zDir != 0)
         {
-            Debug.Log("Moving up/down");
             float remainingDistance = Mathf.Abs((transform.position - end).z);
 
             while (remainingDistance > 0.001f)
@@ -79,7 +77,6 @@ public abstract class MovingObject : MonoBehaviour
         }
         else
         {
-            Debug.Log("Moving left/right");
             float remainingDistance = Mathf.Abs((transform.position - end).x);
 
             while (remainingDistance > 0.001f)

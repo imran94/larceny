@@ -19,14 +19,7 @@ public class Patrol : Enemy {
         if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
             Vector3 moveTo = transform.localPosition + transform.forward * 2;
-            StartCoroutine(SmoothMovement(0, 1, moveTo));
-
-            //transform.position = transform.localPosition + transform.forward * 2;
-
-            // if player detected
-            //if ((int)Mathf.Round(player.transform.position.x) == (int)end.x
-            //    && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).z))
-            //    GameManager.instance.GameOver();
+            StartCoroutine(SmoothMovement(moveTo));
         }
         else
         {
