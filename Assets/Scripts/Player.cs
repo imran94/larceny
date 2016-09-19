@@ -8,38 +8,41 @@ public class Player : MovingObject {
 
     private Animator animator;
 
-	// Used to store location of screen touch origin for mobile controls
-	private Vector3 touchOrigin = -Vector3.one;		
-	private bool couldBeSwipe;
-	private float swipeStartTime;
-	private Vector2 startPos;
-	private int stationaryForFrames;
-	private TouchPhase lastPhase;
+    // Used to store location of screen touch origin for mobile controls
+    private Vector3 touchOrigin = -Vector3.one;
+    private bool couldBeSwipe;
+    private float swipeStartTime;
+    private Vector2 startPos;
+    private int stationaryForFrames;
+    private TouchPhase lastPhase;
 
-	private string text = "";
+    private string text = "";
 
-	private float minSwipeDist = 10;
-	private float maxSwipeTime = 10;
+    private float minSwipeDist = 3;
+    private float maxSwipeTime = 10;
 
     public RaycastHit hit;
+    public bool input;
 
-    protected override void Start ()
+    protected override void Start()
     {
         animator = GetComponent<Animator>();
 
-		couldBeSwipe = false;
+        input = true;
+        couldBeSwipe = false;
         base.Start();
     }
 
-	void OnGUI()
-	{
-		GUI.Label(new Rect(0, 0, 50, 50), text) ;
-	}
+    void OnGUI()
+    {
+        GUI.Label(new Rect(0, 0, 50, 50), text);
+    }
 
-	protected override void Update ()
+    protected override void Update()
     {
         // Exit the function if it's not the player's turn
-		if (!GameManager.instance.playersTurn) return;
+        if (!GameManager.instance.playersTurn) return;
+        if (!input) return;
 
         transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
 
@@ -51,7 +54,7 @@ public class Player : MovingObject {
         // Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
         vertical = (int)(Input.GetAxisRaw("Vertical"));
 
-        #if UNITY_ANDROID
+#if UNITY_ANDROID
 
         if (Input.touchCount > 0)
 		{
@@ -114,44 +117,47 @@ public class Player : MovingObject {
 				}
 			}
 		}
-		#endif
+#endif
 
-		// text = "horizontal: " + horizontal.ToString () + ", vertical: " + vertical.ToString();
+        // text = "horizontal: " + horizontal.ToString () + ", vertical: " + vertical.ToString();
 
-		//if (horizontal != 0)
-			//vertical = 0;
+        //if (horizontal != 0)
+        //vertical = 0;
 
         if (horizontal != 0 || vertical != 0)
-		{
-            Move(horizontal, vertical);
-
-			//AttemptMove<TileType>(horizontal, vertical);
-		}
+        {
+            if (Move(horizontal, vertical))
+                input = false;
+            //AttemptMove<TileType>(horizontal, vertical);
+        }
     }
 
-	private bool isContinuouslyStationary(int frames)
-	{
-		if (lastPhase == TouchPhase.Stationary)
-			stationaryForFrames++;
-		else
-			stationaryForFrames = 1;
+    private bool isContinuouslyStationary(int frames)
+    {
+        if (lastPhase == TouchPhase.Stationary)
+            stationaryForFrames++;
+        else
+            stationaryForFrames = 1;
 
-		return stationaryForFrames > frames;
-	}
+        return stationaryForFrames > frames;
+    }
 
-	private bool isASwipe(Touch touch)
-	{
-		float swipeTime = Time.time - swipeStartTime;
-		float swipeDist = Mathf.Abs (touch.position.x - startPos.x);
+    private bool isASwipe(Touch touch)
+    {
+        float swipeTime = Time.time - swipeStartTime;
+        float swipeDistX = Mathf.Abs(touch.position.x - startPos.x);
+        float swipeDistY = Mathf.Abs(touch.position.y - startPos.y);
 
-		return couldBeSwipe && swipeTime < maxSwipeTime && swipeDist > minSwipeDist;
+        return couldBeSwipe && swipeTime < maxSwipeTime && (swipeDistX > minSwipeDist 
+                                                            || swipeDistY > minSwipeDist);
 	}
 
     void OnCollisionEnter(Collision collision)
     {
-        if (GameManager.instance.playersTurn &&
+        if (GameManager.instance.playersTurn && !GameManager.instance.enemiesMoving &&
             (collision.gameObject.name == "Guard(Clone)" || collision.gameObject.name == "Patrol(Clone)"))
         {
+            Debug.Log("Collision");
             Destroy(collision.gameObject);
         }
     }

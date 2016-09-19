@@ -4,13 +4,13 @@ using System.Collections;
 //The abstract keyword enables you to create classes and class members that are incomplete and must be implemented in a derived class.
 public abstract class MovingObject : MonoBehaviour
 {
-    public float moveTime = 0.5f;           //Time it will take object to move, in seconds.
+    public static float moveTime = 0.1f;           //Time it will take object to move, in seconds.
     public LayerMask blockingLayer;         //Layer on which collision will be checked.
 
     private BoxCollider boxCollider;      //The BoxCollider component attached to this object.
-    private Rigidbody rb;               //The Rigidbody component attached to this object.
     private float inverseMoveTime;          //Used to make movement more efficient.
     protected bool moving;
+    protected Rigidbody rb;               //The Rigidbody component attached to this object.
 
     public float speed;
 
@@ -19,9 +19,10 @@ public abstract class MovingObject : MonoBehaviour
     {
         //Get a component reference to this object's BoxCollider2D
         boxCollider = GetComponent<BoxCollider>();
-
+        
         //Get a component reference to this object's Rigidbody2D
         rb = GetComponent<Rigidbody>();
+        //rb.isKinematic = true;
 
         //By storing the reciprocal of the move time we can use it by multiplying instead of dividing, this is more efficient.
         inverseMoveTime = 1f / moveTime;
@@ -37,7 +38,6 @@ public abstract class MovingObject : MonoBehaviour
 
     protected virtual bool Move(int xDir, int zDir)
     {
-
         //Store start position to move from, based on objects current transform position.
         Vector3 start = transform.position;
         start.x = Mathf.Round(start.x);
@@ -48,99 +48,77 @@ public abstract class MovingObject : MonoBehaviour
         end.x = Mathf.Round(end.x);
         end.z = Mathf.Round(end.z);
 
+        Vector3 moveTo = start + new Vector3(xDir * 2, 0f, zDir * 2);
+
         if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
-            moving = true;
-            transform.position = start + new Vector3(xDir * 2, 0f, zDir * 2);
-            moving = false;
-            GameManager.instance.playersTurn = false;
-
-            //StartCoroutine(SmoothMovement(end));
+            StartCoroutine(SmoothMovement(xDir, zDir, moveTo));
             return true;
         }
 
         return false;
     }
 
-    //Move returns true if it is able to move and false if not. 
-    //Move takes parameters for x direction, y direction and a RaycastHit2D to check collision.
-    protected bool Move(int xDir, int zDir, out RaycastHit hitInfo)
-    {
-        //Store start position to move from, based on objects current transform position.
-        Vector3 start = transform.position;
-
-        // Calculate end position based on the direction parameters passed in when calling Move.
-        Vector3 end = start + new Vector3(xDir, 0, zDir);
-
-        //Disable the boxCollider so that linecast doesn't hit this object's own collider.
-        boxCollider.enabled = false;
-
-        //Cast a line from start point to end point checking collision on blockingLayer.
-        bool hitObject = Physics.Linecast(start, end, out hitInfo, blockingLayer);
-
-        //Re-enable boxCollider after linecast
-        boxCollider.enabled = true;
-
-        //Check if nothing was hit
-        if (!hitObject)
-        {
-        //If nothing was hit, start SmoothMovement co-routine passing in the Vector2 end as destination
-            StartCoroutine(SmoothMovement(end));
-
-        //Return true to say that Move was successful
-            return true;
-        }
-
-
-
-        //If something was hit, return false, Move was unsuccesful.
-        return false;
-    }
-
-
-    //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(Vector3 end)
     {
-        Vector3 speedX = new Vector3(speed, 0f, 0f);
-        Vector3 speedZ = new Vector3(0f, 0f, speed);
+        float remainingDistance = (transform.position - end).magnitude;
 
-        if (end.x - transform.position.x > 0)
+        while (remainingDistance > 0.01f)
         {
-            float distance = end.x - transform.position.x;
-            
+            Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
+            rb.MovePosition(newPosition);
+            remainingDistance = (transform.position - end).magnitude;
+            yield return null;
+        }
+    }
 
-            while (distance > 0)
+    //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
+    protected IEnumerator SmoothMovement(int xDir, int zDir, Vector3 end)
+    {
+        if (zDir != 0)
+        {
+            float remainingDistance = Mathf.Abs((transform.position - end).z);
+
+            while (remainingDistance > 0.001f)
             {
-                transform.position += speedX;
-
+                Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
+                rb.MovePosition(newPosition);
+                remainingDistance = Mathf.Abs((transform.position - end).z);
                 yield return null;
             }
         }
         else
         {
+            float remainingDistance = Mathf.Abs((transform.position - end).x);
 
+            while (remainingDistance > 0.001f)
+            {
+                Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
+                rb.MovePosition(newPosition);
+                remainingDistance = Mathf.Abs((transform.position - end).x);
+                yield return null;
+            }
         }
+
+        GameManager.instance.playersTurn = false;
     }
 
+    protected IEnumerator Rotate(float rotationAmount)
+    {
+        Quaternion finalRotation = Quaternion.Euler(0, rotationAmount, 0) * transform.rotation;
 
+        while (transform.rotation != finalRotation)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, finalRotation, Time.deltaTime * speed);
+            yield return 0;
+        }
+    }
 
     //The virtual keyword means AttemptMove can be overridden by inheriting classes using the override keyword.
     //AttemptMove takes a generic parameter T to specify the type of component we expect our unit to interact with if blocked (Player for Enemies, Wall for Player).
     protected virtual void AttemptMove<T>(int xDir, int zDir)
         where T : Component
     {
-        //Hit will store whatever our linecast hits when Move is called.
-        RaycastHit hit;
 
-        //Set canMove to true if Move was successful, false if failed.
-        bool canMove = Move(xDir, zDir, out hit);
-
-        //Check if nothing was hit by linecast
-        if (hit.transform == null)
-            //If nothing was hit, return and don't execute further code.
-            return;
-
-        //Get a component reference to the component of type T attached to the object that was hit
-        T hitComponent = hit.transform.GetComponent<T>();
     }
 }

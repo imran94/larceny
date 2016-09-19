@@ -6,19 +6,20 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
     public float levelStartDelay = 2f;
-    public float turnDelay = 1f;
+    public float turnDelay = 3f;
 	public static GameManager instance = null;
     public GameObject WinImg;
     public GameObject PauseBtn;
 
     private GameObject player;
+    private Player playerScript;
 	public bool playersTurn = true;
+    public bool enemiesMoving;
 
     public GameObject tileMap;
     public TileMap tileScript;
 
     private List<Enemy> enemies;
-    private bool enemiesMoving;
 
     // Use this for initialization
     void Awake () 
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour {
 
 
         player = GameObject.Find ("Player");
+        playerScript = player.GetComponent<Player>();
 
         enemies = new List<Enemy>();
         
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour {
 	void Update ()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
+        if (Input.GetKeyDown(KeyCode.R)) { resetLvl(); }
 
         if (player == null)
         { 
@@ -72,8 +75,7 @@ public class GameManager : MonoBehaviour {
             //resetLvl();
         }
 
-        if (playersTurn || enemiesMoving)
-            return;
+        if (playersTurn || enemiesMoving) return;
 
         if (player != null)
         {
@@ -119,28 +121,22 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator MoveEnemies()
     {
+        yield return new WaitForSeconds(MovingObject.moveTime);
         enemiesMoving = true;
 
-        if (enemies.Count == 0)
-        {
-            Debug.Log("No enemies");
-            yield return new WaitForSeconds(turnDelay);
-        }
-
-        yield return new WaitForSeconds(turnDelay);
-
-        Debug.Log(enemies.Count);
         foreach (Enemy enemy in enemies.ToArray())
         {
             if (enemy != null)
             {
-                Debug.Log("moving enemiy");
                 enemy.MoveEnemy();
-                yield return new WaitForSeconds(enemy.moveTime);
+                yield return new WaitForSeconds(MovingObject.moveTime);
             }
         }
 
+        yield return new WaitForSeconds(turnDelay);
+
         playersTurn = true;
+        playerScript.input = true;
         enemiesMoving = false;
     }
 
@@ -205,7 +201,7 @@ public class GameManager : MonoBehaviour {
     {
         player.transform.position = new Vector3(1f, 3f, 1f);
 
-        instantiateEnemy("Patrol", 1f, 7f, 90f);
+        instantiateEnemy("Guard", 1f, 7f, 90f);
         instantiateEnemy("Guard", 3f, 3f, 180f);
         instantiateEnemy("Guard", 3f, 5f, 180f);
         instantiateEnemy("Guard", 5f, 3f, -90f);
