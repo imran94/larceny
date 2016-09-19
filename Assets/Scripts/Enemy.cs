@@ -19,10 +19,17 @@ public abstract class Enemy : MovingObject
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.name == "Player")
+        {
+            Debug.Log("Enemy collision: " +
+                "playersTurn: " + GameManager.instance.playersTurn +
+                    ", enemiesMoving: " + GameManager.instance.enemiesMoving);
+        }
+
         if (!GameManager.instance.playersTurn && GameManager.instance.enemiesMoving
             && collision.gameObject.name == "Player")
         {
-            GameManager.instance.GameOver();
+            StartCoroutine(GameManager.instance.GameOver());
         }
     }
 

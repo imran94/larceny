@@ -22,6 +22,10 @@ public class Guard : Enemy {
             if ((int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).x)
                     && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).z))
             {
+                Debug.Log("Enemy moving: " +
+                    "playersTurn: " + GameManager.instance.playersTurn +
+                    ", enemiesMoving: " + GameManager.instance.enemiesMoving);
+
                 //transform.localPosition += transform.forward * 2;
                 Vector3 moveTo = transform.localPosition + transform.forward * 2;
                 Vector3 distance = moveTo - transform.position;

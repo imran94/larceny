@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-    public float levelStartDelay = 2f;
+    public float levelStartDelay = 1.0f;
     public float turnDelay = 3f;
 	public static GameManager instance = null;
     public GameObject WinImg;
@@ -101,11 +101,13 @@ public class GameManager : MonoBehaviour {
         WinImg.SetActive(true);
     }
 
-    public void GameOver()
+    public IEnumerator GameOver()
     {
+        Debug.Log("Game Over");
         float currentTime = Time.timeScale;
-        Time.timeScale = 0;
-        Debug.Log("Player has been destroyed");
+        //Time.timeScale = 0;
+
+        yield return new WaitForSeconds(levelStartDelay);
 
         Destroy(GameObject.Find("TileMap"));
 
@@ -115,7 +117,7 @@ public class GameManager : MonoBehaviour {
         //SceneManager.LoadScene(sceneIndex);
 
         resetLvl();
-        Time.timeScale = currentTime;
+        //Time.timeScale = currentTime;
     }
 
     IEnumerator MoveEnemies()
@@ -128,7 +130,7 @@ public class GameManager : MonoBehaviour {
             if (enemy != null)
             {
                 enemy.MoveEnemy();
-                yield return new WaitForSeconds(MovingObject.moveTime);
+                yield return new WaitForSeconds(MovingObject.moveTime * 2);
             }
         }
 
@@ -137,6 +139,7 @@ public class GameManager : MonoBehaviour {
         playersTurn = true;
         playerScript.input = true;
         enemiesMoving = false;
+        Debug.Log("Done moving");
     }
 
     public void generateLevel(int level)
