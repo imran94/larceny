@@ -87,6 +87,8 @@ public class GameManager : MonoBehaviour {
             }
         }
 
+        enemiesMoving = true;
+
         StartCoroutine(MoveEnemies());
 	}
 
@@ -122,15 +124,14 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator MoveEnemies()
     {
+        Debug.Log("MoveEnemies");
         yield return new WaitForSeconds(MovingObject.moveTime);
-        enemiesMoving = true;
 
         foreach (Enemy enemy in enemies.ToArray())
         {
             if (enemy != null)
             {
                 enemy.MoveEnemy();
-                yield return new WaitForSeconds(MovingObject.moveTime * 2);
             }
         }
 
@@ -139,7 +140,6 @@ public class GameManager : MonoBehaviour {
         playersTurn = true;
         playerScript.input = true;
         enemiesMoving = false;
-        Debug.Log("Done moving");
     }
 
     public void generateLevel(int level)

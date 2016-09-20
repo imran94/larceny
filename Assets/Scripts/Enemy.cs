@@ -12,6 +12,12 @@ public abstract class Enemy : MovingObject
         base.Start();
     }
 
+    protected override void Update()
+    {
+        if (!GameManager.instance.enemiesMoving)
+            base.Update();
+    }
+
     protected override void AttemptMove<T>(int xDir, int zDir)
     {
         base.AttemptMove<T>(xDir, zDir);
@@ -19,13 +25,6 @@ public abstract class Enemy : MovingObject
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Player")
-        {
-            Debug.Log("Enemy collision: " +
-                "playersTurn: " + GameManager.instance.playersTurn +
-                    ", enemiesMoving: " + GameManager.instance.enemiesMoving);
-        }
-
         if (!GameManager.instance.playersTurn && GameManager.instance.enemiesMoving
             && collision.gameObject.name == "Player")
         {
@@ -33,5 +32,5 @@ public abstract class Enemy : MovingObject
         }
     }
 
-    abstract public void MoveEnemy();
+    abstract public bool MoveEnemy();
 }

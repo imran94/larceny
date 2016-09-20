@@ -33,7 +33,7 @@ public abstract class MovingObject : MonoBehaviour
 
     protected virtual void Update()
     {
-
+        transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
     }
 
     protected virtual bool Move(int xDir, int zDir)
@@ -59,45 +59,29 @@ public abstract class MovingObject : MonoBehaviour
         return false;
     }
 
-    protected IEnumerator SmoothMovement(Vector3 end)
+    private float getRemainingDistance(char c, Vector3 end)
     {
-        float remainingDistance = (transform.position - end).magnitude;
-
-        while (remainingDistance > 0.01f)
-        {
-            Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
-            rb.MovePosition(newPosition);
-            remainingDistance = (transform.position - end).magnitude;
-            yield return null;
-        }
+        if (c == 'x')
+            return Mathf.Abs((rb.position - end).x);
+        else
+            return Mathf.Abs((rb.position - end).z);
     }
 
     //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(int xDir, int zDir, Vector3 end)
     {
-        if (zDir != 0)
-        {
-            float remainingDistance = Mathf.Abs((transform.position - end).z);
+        char c;
 
-            while (remainingDistance > 0.001f)
-            {
-                Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
-                rb.MovePosition(newPosition);
-                remainingDistance = Mathf.Abs((transform.position - end).z);
-                yield return null;
-            }
-        }
+        if (xDir != 0)
+            c = 'x';
         else
-        {
-            float remainingDistance = Mathf.Abs((transform.position - end).x);
+            c = 'z';
 
-            while (remainingDistance > 0.001f)
-            {
-                Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
-                rb.MovePosition(newPosition);
-                remainingDistance = Mathf.Abs((transform.position - end).x);
-                yield return null;
-            }
+        while (getRemainingDistance(c, end) > 0.001f)
+        {
+            Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
+            rb.MovePosition(newPosition);
+            yield return null;
         }
 
         GameManager.instance.playersTurn = false;
@@ -105,12 +89,14 @@ public abstract class MovingObject : MonoBehaviour
 
     protected IEnumerator Rotate(float rotationAmount)
     {
-        Quaternion finalRotation = Quaternion.Euler(0, rotationAmount, 0) * transform.rotation;
+        Quaternion finalRotation = Quaternion.Euler(0, rotationAmount, 0) * rb.rotation;
 
-        while (transform.rotation != finalRotation)
+        Debug.Log("transform.rotation: " + transform.rotation + " finalRotation: " + finalRotation);
+        while (rb.rotation != finalRotation)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, finalRotation, Time.deltaTime * speed);
-            yield return 0;
+            
+            rb.rotation = Quaternion.Lerp(transform.rotation, finalRotation, /*Time.deltaTime * speed*/moveTime);
+            yield return null;
         }
     }
 
