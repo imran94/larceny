@@ -12,6 +12,8 @@ public class TileMap : MonoBehaviour {
 	const int WALKABLE = 0;
 	const int NONWALKABLE = 1;
 	const int EXIT = 2;
+    const int PATH_HORIZONTAL = 3;
+    const int PATH_VERTICAL = 4;
 
     int mapSizeX;
     int mapSizeZ;
@@ -28,11 +30,16 @@ public class TileMap : MonoBehaviour {
         GameObject walkable = (GameObject)Instantiate (Resources.Load ("Walkable"));
         GameObject nonWalkable = (GameObject)Instantiate (Resources.Load ("NonWalkable"));
 		GameObject exit = (GameObject)Instantiate (Resources.Load ("Exit"));
+        GameObject pathHorizontal = (GameObject)Instantiate(Resources.Load("Path"));
+        GameObject pathVertical = (GameObject)Instantiate(Resources.Load("Path"));
+        pathVertical.transform.Rotate(new Vector3(0f, 90f, 0f));
 
-        tileTypes = new TileType[3];
+        tileTypes = new TileType[5];
         tileTypes [WALKABLE] = new TileType (walkable, true);
         tileTypes [NONWALKABLE] = new TileType (nonWalkable, false);
 		tileTypes [EXIT] = new TileType (exit, true);
+        tileTypes [PATH_HORIZONTAL] = new TileType (pathHorizontal, true);
+        tileTypes [PATH_VERTICAL] = new TileType (pathVertical, true);
     }
 
     void generateMapVisual()
@@ -93,6 +100,17 @@ public class TileMap : MonoBehaviour {
         generateMapVisual();
     }
 
+    void assignTiles(int mapSizeX, int mapSizeZ, int[,] lvlArray)
+    {
+        for (int i = 0; i < mapSizeZ; i++)
+        {
+            for (int j = 0; j < mapSizeX; j++)
+            {
+                tiles[j, i] = tileTypes[lvlArray[i, j]];
+            }
+        }
+    }
+
     void generateLevel1()
     {
         mapSizeX = 7;
@@ -100,12 +118,24 @@ public class TileMap : MonoBehaviour {
 
         genericLevel();
 
-        for (int i = 1; i < 5; i++)
+        int[,] lvlArray = new int[,]
         {
-            tiles[i, 1] = tileTypes[WALKABLE];
-        }
+            {1, 1, 1, 1, 1, 1, 1},
+            {1, 0, 3, 0, 3, 2, 1},
+            {1, 1, 1, 1, 1, 1, 1}
+        };
 
-        tiles[5, 1] = tileTypes[EXIT];
+        assignTiles(mapSizeX, mapSizeZ, lvlArray);
+
+        //for (int i = 0; i < mapSizeZ; i++)
+        //{
+        //    for (int j = 0; j < mapSizeX; j++)
+        //    {
+        //        tiles[j, i] = tileTypes[lvlArray[i, j]];
+        //    }
+        //}
+
+        //tiles[5, 1] = tileTypes[EXIT];
     }
 
     void generateLevel2()
