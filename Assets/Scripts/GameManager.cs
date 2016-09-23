@@ -243,6 +243,7 @@ public class GameManager : MonoBehaviour
     {
         player.transform.position = new Vector3(5f, 1f, 1f);
         instantiateEnemy("Patrol", 1f, 3f, 90f);
+        instantiateCollectible(new Vector3(1f, 0.8f, 5f));
     }
 
     void generateLevel7()
@@ -250,6 +251,7 @@ public class GameManager : MonoBehaviour
         player.transform.position = new Vector3(1f, 1f, 1f);
         instantiateEnemy("Patrol", 7f, 3f, 90f);
         instantiateEnemy("Patrol", 5f, 5f, -90f);
+        instantiateCollectible(new Vector3(7f, 0.8f, 7f));
     }
 
     void instantiateEnemy(string type, float x, float z, float angleY)
