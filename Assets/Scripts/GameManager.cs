@@ -111,6 +111,19 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    public int noOfEnemiesKilled()
+    {
+        int i = 0;
+
+        foreach(Enemy e in enemies)
+        {
+            if (e == null)
+                i++;
+        }
+
+        return i;
+    }
+
     public void levelComplete()
     {
         //resetLvl();
