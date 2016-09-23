@@ -93,7 +93,7 @@ public abstract class MovingObject : MonoBehaviour
         end.x = Mathf.Round(end.x);
         end.z = Mathf.Round(end.z);
 
-        if (!TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
+        if (this is Patrol && !TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
             StartCoroutine(Rotate(180f));
         }

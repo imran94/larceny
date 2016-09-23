@@ -29,7 +29,6 @@ public class Patrol : Enemy {
             Vector3 moveTo = transform.localPosition + transform.forward * 2;
             Vector3 distance = moveTo - transform.position;
             StartCoroutine(SmoothMovement((int)distance.x, (int)distance.z, moveTo));
-            transform.position = moveTo;
 
             source.PlayOneShot(SFX_Enemy_Move, 1f);
 
