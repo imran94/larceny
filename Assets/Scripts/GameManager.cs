@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     public float turnDelay = 3f;
     public static GameManager instance = null;
     public GameObject WinImg;
-    public GameObject PauseBtn;
 
     private GameObject player;
     private Player playerScript;
@@ -55,7 +54,7 @@ public class GameManager : MonoBehaviour
     }
 
 	public void InitGame ()
-	{
+    {
         generateLevel(Loader.level);
     }
 
@@ -102,10 +101,10 @@ public class GameManager : MonoBehaviour
         //enemies.Add(script);
     }
 
-	public void levelComplete()
-	{
+    public void levelComplete()
+    {
+        //resetLvl();
         WinImg.SetActive(true);
-        PauseBtn.SetActive(false);
     }
 
     public IEnumerator GameOver()
