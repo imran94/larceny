@@ -9,7 +9,7 @@ public abstract class MovingObject : MonoBehaviour
     //public AudioClip SFX_Movement;        //Specifying audio file
 
     private BoxCollider boxCollider;      //The BoxCollider component attached to this object.
-    private float inverseMoveTime;          //Used to make movement more efficient.
+    protected float inverseMoveTime;          //Used to make movement more efficient.
     //private AudioSource source;
     protected bool moving;
     protected Rigidbody rb;               //The Rigidbody component attached to this object.
@@ -63,7 +63,7 @@ public abstract class MovingObject : MonoBehaviour
         return false;
     }
 
-    private float getRemainingDistance(char c, Vector3 end)
+    protected float getRemainingDistance(char c, Vector3 end)
     {
         if (c == 'x')
             return Mathf.Abs((rb.position - end).x);
@@ -87,6 +87,15 @@ public abstract class MovingObject : MonoBehaviour
             rb.MovePosition(newPosition);
             
             yield return null;
+        }
+
+        end = transform.localPosition + transform.forward;
+        end.x = Mathf.Round(end.x);
+        end.z = Mathf.Round(end.z);
+
+        if (!TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
+        {
+            StartCoroutine(Rotate(180f));
         }
         GameManager.instance.playersTurn = false;
     }

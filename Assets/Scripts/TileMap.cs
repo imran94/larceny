@@ -15,8 +15,8 @@ public class TileMap : MonoBehaviour {
     const int PATH_HORIZONTAL = 3;
     const int PATH_VERTICAL = 4;
 
-    int mapSizeX;
-    int mapSizeZ;
+    public int mapSizeX;
+    public int mapSizeZ;
 
 	private Transform tileMap;
 	private List <Vector3> tilePositions = new List<Vector3> ();
@@ -196,7 +196,7 @@ public class TileMap : MonoBehaviour {
         assignTiles(mapSizeX, mapSizeZ, lvlArray);
     }
 
-    void generateLevel5()
+    void generateLevel6()
     {
         mapSizeX = 11;
         mapSizeZ = 10;
@@ -220,7 +220,7 @@ public class TileMap : MonoBehaviour {
         assignTiles(mapSizeX, mapSizeZ, lvlArray);
     }
 
-    void generateLevel6()
+    void generateLevel5()
     {
         mapSizeX = 7;
         mapSizeZ = 7;

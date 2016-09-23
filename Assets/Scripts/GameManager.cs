@@ -230,24 +230,24 @@ public class GameManager : MonoBehaviour
 
     void generateLevel1()
     {
-        player.transform.position = new Vector3(1f, 3f, 1f);
+        player.transform.position = new Vector3(1f, 1f, 1f);
     }
 
     void generateLevel2()
     {
-        player.transform.position = new Vector3(1f, 3f, 1f);
+        player.transform.position = new Vector3(1f, 1f, 1f);
         instantiateEnemy("Guard", 5f, 1f, 90f);
     }
 
     void generateLevel3()
     {
-        player.transform.position = new Vector3(3f, 3f, 1f);
+        player.transform.position = new Vector3(3f, 1f, 1f);
         instantiateEnemy("Guard", 3f, 7f, 180f);
     }
 
     void generateLevel4()
     {
-        player.transform.position = new Vector3(1f, 3f, 1f);
+        player.transform.position = new Vector3(1f, 1f, 1f);
 
         instantiateEnemy("Guard", 1f, 7f, 90f);
         instantiateEnemy("Guard", 3f, 3f, 180f);
@@ -258,9 +258,9 @@ public class GameManager : MonoBehaviour
         instantiateEnemy("Guard", 7f, 5f, 180f);
     }
 
-    void generateLevel5()
+    void generateLevel6()
     {
-        player.transform.position = new Vector3(5f, 3f, 1f);
+        player.transform.position = new Vector3(5f, 1f, 1f);
 
         instantiateEnemy("Patrol", 3f, 3f, -90f);
         instantiateEnemy("Patrol", 3f, 5f, -90f);
@@ -269,7 +269,7 @@ public class GameManager : MonoBehaviour
         instantiateCollectible(new Vector3(1f, 0.8f, 1f));
     }
 
-    void generateLevel6()
+    void generateLevel5()
     {
         player.transform.position = new Vector3(5f, 1f, 1f);
         instantiateEnemy("Patrol", 1f, 3f, 90f);
@@ -286,7 +286,7 @@ public class GameManager : MonoBehaviour
 
     void instantiateEnemy(string type, float x, float z, float angleY)
     {
-        GameObject go = (GameObject)Instantiate(Resources.Load(type), new Vector3(x, 3f, z), Quaternion.identity);
+        GameObject go = (GameObject)Instantiate(Resources.Load(type), new Vector3(x, 1f, z), Quaternion.identity);
         go.transform.Rotate(0f, angleY, 0f);
         Enemy enemy = go.GetComponent(type) as Enemy;
         enemies.Add(enemy);

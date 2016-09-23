@@ -5,17 +5,19 @@ public class CameraController : MonoBehaviour {
 
     public GameObject player;
     public Vector3 offset;
+    public Vector3 lvlCenter;
 
+    int x;
+    int z;
 	// Use this for initialization
 	void Start ()
     {
-        player = GameObject.Find("Player");
-        offset = new Vector3(0f, 3f, -2f);
-	}
-	
-	void LateUpdate ()
-    {
-        if (player != null)
-            transform.position = player.transform.position + offset;
+        offset = new Vector3(0f, 5f, -3f);
+
+        x = GameManager.instance.tileScript.mapSizeX / 2;
+        z = GameManager.instance.tileScript.mapSizeZ / 3;
+        lvlCenter = new Vector3(x, 0f, z);
+
+        transform.position = lvlCenter + offset;
     }
 }
