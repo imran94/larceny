@@ -44,7 +44,8 @@ public class Player : MovingObject {
         if (!GameManager.instance.playersTurn) return;
         if (!input) return;
 
-        transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
+        base.Update();
+        //transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
 
         int horizontal = 0;     // Horizontal move direction
         int vertical = 0;       // Vertical move direction
@@ -157,7 +158,7 @@ public class Player : MovingObject {
         if (GameManager.instance.playersTurn && !GameManager.instance.enemiesMoving &&
             (collision.gameObject.name == "Guard(Clone)" || collision.gameObject.name == "Patrol(Clone)"))
         {
-            Debug.Log("Collision");
+            Debug.Log("Player collision");
             Destroy(collision.gameObject);
         }
     }

@@ -5,12 +5,12 @@ using System;
 public class Guard : Enemy {
 
     // Update is called once per frame
-    protected override void Update ()
-    {
+    //protected override void Update ()
+    //{
 
-    }
+    //}
 
-    public override void MoveEnemy()
+    public override bool MoveEnemy()
     {
         Vector3 end = transform.localPosition + transform.forward;
         end.x = Mathf.Round(end.x);
@@ -26,7 +26,11 @@ public class Guard : Enemy {
                 Vector3 moveTo = transform.localPosition + transform.forward * 2;
                 Vector3 distance = moveTo - transform.position;
                 StartCoroutine(SmoothMovement((int)distance.x, (int)distance.z, moveTo));
+
+                return true;
             }
         }
+
+        return false;
     }
 }

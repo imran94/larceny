@@ -1,0 +1,48 @@
+﻿Merge branch 'master' of https://github.com/imran94/larceny into menu
+
+# Conflicts:
+#	Assets/Resources/Guard.prefab
+#	Assets/Scripts/Loader.cs
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch menu
+# Your branch is up-to-date with 'origin/menu'.
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	new file:   Assets/Audio/collision.ogg
+#	new file:   Assets/Audio/collision.ogg.meta
+#	new file:   Assets/Audio/movement.ogg
+#	new file:   Assets/Audio/movement.ogg.meta
+#	renamed:    Assets/tile_grid_exit.jpg -> Assets/Images/tile_grid_exit.jpg
+#	renamed:    Assets/tile_grid_exit.jpg.meta -> Assets/Images/tile_grid_exit.jpg.meta
+#	renamed:    Assets/tile_grid_line.jpg -> Assets/Images/tile_grid_line.jpg
+#	renamed:    Assets/tile_grid_line.jpg.meta -> Assets/Images/tile_grid_line.jpg.meta
+#	new file:   Assets/Images/tile_grid_path.jpg
+#	new file:   Assets/Images/tile_grid_path.jpg.meta
+#	renamed:    Assets/tile_walkable.jpg -> Assets/Images/tile_walkable.jpg
+#	renamed:    Assets/tile_walkable.jpg.meta -> Assets/Images/tile_walkable.jpg.meta
+#	new file:   Assets/Materials/Bouncer.mat
+#	new file:   Assets/Materials/Bouncer.mat.meta
+#	new file:   Assets/Materials/Path.mat
+#	new file:   Assets/Materials/Path.mat.meta
+#	new file:   Assets/Resources/Path.prefab
+#	new file:   Assets/Resources/Path.prefab.meta
+#	modified:   Assets/Scripts/Enemy.cs
+#	modified:   Assets/Scripts/GameManager.cs
+#	modified:   Assets/Scripts/Guard.cs
+#	modified:   Assets/Scripts/Loader.cs
+#	modified:   Assets/Scripts/MovingObject.cs
+#	modified:   Assets/Scripts/Patrol.cs
+#	modified:   Assets/Scripts/Player.cs
+#	modified:   Assets/Scripts/TileMap.cs
+#
+

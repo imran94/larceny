@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-    public float levelStartDelay = 2f;
+    public float levelStartDelay = 1.0f;
     public float turnDelay = 3f;
 	public static GameManager instance = null;
     public GameObject WinImg;
@@ -88,6 +88,8 @@ public class GameManager : MonoBehaviour {
             }
         }
 
+        enemiesMoving = true;
+
         StartCoroutine(MoveEnemies());
 	}
 
@@ -102,11 +104,13 @@ public class GameManager : MonoBehaviour {
         PauseBtn.SetActive(false);
     }
 
-    public void GameOver()
+    public IEnumerator GameOver()
     {
+        Debug.Log("Game Over");
         float currentTime = Time.timeScale;
-        Time.timeScale = 0;
-        Debug.Log("Player has been destroyed");
+        //Time.timeScale = 0;
+
+        yield return new WaitForSeconds(levelStartDelay);
 
         Destroy(GameObject.Find("TileMap"));
 
@@ -116,20 +120,19 @@ public class GameManager : MonoBehaviour {
         //SceneManager.LoadScene(sceneIndex);
 
         resetLvl();
-        Time.timeScale = currentTime;
+        //Time.timeScale = currentTime;
     }
 
     IEnumerator MoveEnemies()
     {
+        Debug.Log("MoveEnemies");
         yield return new WaitForSeconds(MovingObject.moveTime);
-        enemiesMoving = true;
 
         foreach (Enemy enemy in enemies.ToArray())
         {
             if (enemy != null)
             {
                 enemy.MoveEnemy();
-                yield return new WaitForSeconds(MovingObject.moveTime);
             }
         }
 
