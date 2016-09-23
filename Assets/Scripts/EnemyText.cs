@@ -13,15 +13,16 @@ public class EnemyText : MonoBehaviour {
         text = GetComponent<Text>();
 	}
 
-    int enemyAmt = GameManager.instance.enemies.Count;
-
 	// Update is called once per frame
 	void Update () {
-        if (GameManager.instance.enemies.Count != 0)
+
+        int enemyAmt = GameManager.instance.enemies.Count;
+        int numLeft = GameManager.instance.enemies.Count - GameManager.instance.noOfEnemiesKilled();
+
+        if (GameManager.instance.enemies.Count > 0)
         {
             EnemyTxt.SetActive(true);
-            text.text = "Enemies: " + GameManager.instance.noOfEnem + "/" + enemyAmt;
-            Debug.Log(enemyAmt);
+            text.text = "Enemies Left:" + numLeft + "/" + enemyAmt;
         }
         else
         {

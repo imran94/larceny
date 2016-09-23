@@ -25,7 +25,7 @@ public class CollectibleText : MonoBehaviour {
             }
             else
             {
-                text.text = "Collectible: 1/1";
+                text.text = "Collectible: 1/" + 1;
             }
         }
         else
