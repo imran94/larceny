@@ -126,16 +126,21 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("MoveEnemies");
         yield return new WaitForSeconds(MovingObject.moveTime);
+        bool enemyMovement = false;
 
         foreach (Enemy enemy in enemies.ToArray())
         {
             if (enemy != null)
             {
-                enemy.MoveEnemy();
+                if (enemy.MoveEnemy())
+                    enemyMovement = true;
             }
         }
 
-        yield return new WaitForSeconds(turnDelay);
+        if (enemyMovement)
+            yield return new WaitForSeconds(MovingObject.moveTime);
+
+        yield return new WaitForSeconds(turnDelay * 2);
 
         playersTurn = true;
         playerScript.input = true;
