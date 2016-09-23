@@ -9,9 +9,11 @@ public class GameManager : MonoBehaviour
     public float turnDelay = 3f;
     public static GameManager instance = null;
     public GameObject WinImg;
+    public AudioClip SFX_LevelComplete;
 
     private GameObject player;
     private GameObject collectible;
+    private AudioSource source;
 
     private Player playerScript;
     public bool playersTurn = true;
@@ -53,6 +55,8 @@ public class GameManager : MonoBehaviour
         tileMap = Instantiate(Resources.Load("TileMap")) as GameObject;
         tileScript = tileMap.GetComponent<TileMap>();
         tileScript.generateLevel(Loader.level);
+
+        source = GetComponent<AudioSource>();
 
         InitGame();
     }
@@ -128,7 +132,9 @@ public class GameManager : MonoBehaviour
     {
         //resetLvl();
         Debug.Log("All Enemies Killed: " + allEnemiesKilled());
+
         WinImg.SetActive(true);
+        source.PlayOneShot(SFX_LevelComplete, 1F);
     }
 
     public IEnumerator GameOver()
