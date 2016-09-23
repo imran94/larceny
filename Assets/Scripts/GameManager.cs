@@ -178,7 +178,12 @@ public class GameManager : MonoBehaviour {
             case 5:
                 generateLevel5();
                 break;
-
+            case 6:
+                generateLevel6();
+                break;
+            case 7:
+                generateLevel7();
+                break;
         }
     }
 
@@ -224,6 +229,19 @@ public class GameManager : MonoBehaviour {
         instantiateEnemy("Patrol", 3f, 3f, -90f);
         instantiateEnemy("Patrol", 3f, 5f, -90f);
         instantiateEnemy("Patrol", 7f, 7f, 90f);
+    }
+
+    void generateLevel6()
+    {
+        player.transform.position = new Vector3(5f, 1f, 1f);
+        instantiateEnemy("Patrol", 1f, 3f, 90f);
+    }
+
+    void generateLevel7()
+    {
+        player.transform.position = new Vector3(1f, 1f, 1f);
+        instantiateEnemy("Patrol", 7f, 3f, 90f);
+        instantiateEnemy("Patrol", 5f, 5f, -90f);
     }
 
     void instantiateEnemy(string type, float x, float z, float angleY)

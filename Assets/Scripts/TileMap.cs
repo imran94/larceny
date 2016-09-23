@@ -94,6 +94,12 @@ public class TileMap : MonoBehaviour {
             case 5:
                 generateLevel5();
                 break;
+            case 6:
+                generateLevel6();
+                break;
+            case 7:
+                generateLevel7();
+                break;
         }
 
         generateMapVisual();
@@ -202,9 +208,9 @@ public class TileMap : MonoBehaviour {
             {1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1},
             {1, 0, 3, 0, 3, 0, 3, 0, 3, 0, 1},
-            {1, 4, 1, 1, 1, 1, 1, 1, 1, 4, 1},
+            {1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1},
             {1, 0, 3, 0, 3, 0, 3, 0, 1, 0, 1},
-            {1, 4, 1, 1, 1, 1, 1, 1, 1, 4, 1},
+            {1, 4, 1, 4, 1, 1, 1, 1, 1, 4, 1},
             {1, 0, 3, 0, 3, 0, 3, 0, 3, 0, 1},
             {1, 4, 1, 1, 1, 4, 1, 1, 1, 1, 1},
             {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1},
@@ -212,26 +218,51 @@ public class TileMap : MonoBehaviour {
         };
 
         assignTiles(mapSizeX, mapSizeZ, lvlArray);
-        //tiles[5, 1] = tileTypes[WALKABLE];
-        //tiles[5, 2] = tileTypes[WALKABLE];
+    }
 
-        //for (int i = 1; i < 10; i++)
-        //{
-        //    tiles[i, 3] = tileTypes[WALKABLE];
-        //    tiles[i, 7] = tileTypes[WALKABLE];
-        //}
+    void generateLevel6()
+    {
+        mapSizeX = 7;
+        mapSizeZ = 7;
 
-        //for (int i = 4; i < 7; i++)
-        //{
-        //    tiles[1, i] = tileTypes[WALKABLE];
-        //    tiles[9, i] = tileTypes[WALKABLE];
-        //}
+        genericLevel();
 
-        //for (int i = 2; i < 8; i++)
-        //    tiles[i, 5] = tileTypes[WALKABLE];
+        int[,] lvlArray = new int[,]
+        {
+            {1, 1, 1, 1, 1, 1, 1},
+            {1, 0, 3, 0, 1, 2, 1},
+            {1, 4, 1, 4, 1, 4, 1},
+            {1, 0, 3, 0, 3, 0, 1},
+            {1, 4, 1, 4, 1, 4, 1},
+            {1, 0, 3, 0, 3, 0, 1},
+            {1, 1, 1, 1, 1, 1, 1}
+        };
 
-        //tiles[5, 8] = tileTypes[WALKABLE];
-        //tiles[5, 9] = tileTypes[EXIT];
+        assignTiles(mapSizeX, mapSizeZ, lvlArray);
+    }
+
+    void generateLevel7()
+    {
+        mapSizeX = 11;
+        mapSizeZ = 9;
+
+        genericLevel();
+
+        int[,] lvlArray = new int[,]
+        {
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 0, 3, 0, 3, 0, 1, 1, 1},
+            {1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1},
+            {1, 0, 3, 0, 3, 0, 3, 0, 3, 2, 1},
+            {1, 1, 1, 4, 1, 4, 1, 4, 1, 1, 1},
+            {1, 0, 3, 0, 3, 0, 3, 0, 3, 0, 1},
+            {1, 1, 1, 4, 1, 4, 1, 4, 1, 1, 1},
+            {1, 0, 3, 0, 3, 0, 3, 0, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+        };
+
+        assignTiles(mapSizeX, mapSizeZ, lvlArray);
+
     }
 
     // Update is called once per frame
