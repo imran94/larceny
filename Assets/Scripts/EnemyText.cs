@@ -22,7 +22,7 @@ public class EnemyText : MonoBehaviour {
         if (GameManager.instance.enemies.Count > 0)
         {
             EnemyTxt.SetActive(true);
-            text.text = "Enemies Left:" + numLeft + "/" + enemyAmt;
+            text.text = "Enemies Left: " + numLeft + "/" + enemyAmt;
         }
         else
         {
