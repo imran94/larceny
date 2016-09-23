@@ -5,7 +5,8 @@ using System;
 public class Player : MovingObject {
 
     public float restartLevelDelay = 1f;
-    public AudioClip SFX_Collision;
+    public AudioClip SFX_Collision;     //Specifying audio file
+    public AudioClip SFX_Movement;        //Specifying audio file
 
     private Animator animator;
     private AudioSource source;
@@ -132,7 +133,10 @@ public class Player : MovingObject {
         if (horizontal != 0 || vertical != 0)
         {
             if (Move(horizontal, vertical))
+            {
                 input = false;
+                source.PlayOneShot(SFX_Movement, 1F);
+            }
             //AttemptMove<TileType>(horizontal, vertical);
         }
     }
@@ -168,8 +172,9 @@ public class Player : MovingObject {
             Debug.Log("Player collision, playersturn: " + GameManager.instance.playersTurn +
                 ", enemiesMoving: " + GameManager.instance.enemiesMoving);
             Destroy(collision.gameObject);
+            source.PlayOneShot(SFX_Collision, 1F); //Play collision sound
             GameManager.instance.colliding = false;
-            source.Play();
+            Debug.Log("Collision sound played");
         }
     }
 }
