@@ -17,7 +17,7 @@ public class Collectible : MonoBehaviour {
     {
         if (collision.gameObject.name == "Player" )
         {
-            GameManager.instance.hasCollectible = true;
+            GameManager.instance.CollectiblePickedUp = true;
             Destroy(this.gameObject);
         }
     }

@@ -17,15 +17,15 @@ public class GameManager : MonoBehaviour
     public bool playersTurn = true;
     public bool enemiesMoving;
 
-    public bool collectibleExists;
-    public bool hasCollectible;
+    public bool collectibleExists = false;
+    public bool CollectiblePickedUp = false;
 
     public bool colliding;
 
     public GameObject tileMap;
     public TileMap tileScript;
 
-    private List<Enemy> enemies;
+    public List<Enemy> enemies;
 
     // Use this for initialization
     void Awake()
@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
         }
         enemies.Clear();
 
-        collectibleExists = hasCollectible = false;
+        collectibleExists = CollectiblePickedUp = false;
         if (collectible != null)
             Destroy(collectible);
 
