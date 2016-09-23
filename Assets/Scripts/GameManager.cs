@@ -3,18 +3,21 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     public float levelStartDelay = 1.0f;
     public float turnDelay = 3f;
-	public static GameManager instance = null;
+    public static GameManager instance = null;
     public GameObject WinImg;
-    public GameObject PauseBtn;
 
     private GameObject player;
     private Player playerScript;
-	public bool playersTurn = true;
+    public bool playersTurn = true;
     public bool enemiesMoving;
+
+    public bool collectibleExists;
+    public bool hasCollectible;
 
     public GameObject tileMap;
     public TileMap tileScript;
@@ -22,46 +25,46 @@ public class GameManager : MonoBehaviour {
     private List<Enemy> enemies;
 
     // Use this for initialization
-    void Awake () 
-	{
-		// Check if instance already exists
-		if (instance == null)
-			// if not, set the instance to this	
-			instance = this;
-		// if instance exists, and is not this
-		else if (instance != this)
-			// Then destroy this to enforce a singleton pattern
-			Destroy (this);
+    void Awake()
+    {
+        // Check if instance already exists
+        if (instance == null)
+            // if not, set the instance to this	
+            instance = this;
+        // if instance exists, and is not this
+        else if (instance != this)
+            // Then destroy this to enforce a singleton pattern
+            Destroy(this);
 
         // set this to not be destroyed when reloading scene
         //DontDestroyOnLoad(this);
         /** gameObject needs to be destroyed in order to eliminate the bug **/
 
 
-        player = GameObject.Find ("Player");
+        player = GameObject.Find("Player");
         playerScript = player.GetComponent<Player>();
 
         enemies = new List<Enemy>();
-        
+
         //Get a component reference to the attached TileMap script
         tileMap = Instantiate(Resources.Load("TileMap")) as GameObject;
         tileScript = tileMap.GetComponent<TileMap>();
 
-        InitGame ();
-	}
+        InitGame();
+    }
 
-	public void InitGame ()
-	{
+    void InitGame()
+    {
         generateLevel(Loader.level);
     }
-	
-	void Update ()
+
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
         if (Input.GetKeyDown(KeyCode.R)) { resetLvl(); }
 
         if (player == null)
-        { 
+        {
             //Time.timeScale = 0;
             //Debug.Log("Player has been destroyed");
 
@@ -91,17 +94,17 @@ public class GameManager : MonoBehaviour {
         enemiesMoving = true;
 
         StartCoroutine(MoveEnemies());
-	}
+    }
 
     public void AddEnemiesToScript(Enemy script)
     {
         //enemies.Add(script);
     }
 
-	public void levelComplete()
-	{
+    public void levelComplete()
+    {
+        //resetLvl();
         WinImg.SetActive(true);
-        PauseBtn.SetActive(false);
     }
 
     public IEnumerator GameOver()
@@ -127,16 +130,21 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("MoveEnemies");
         yield return new WaitForSeconds(MovingObject.moveTime);
+        bool enemyMovement = false;
 
         foreach (Enemy enemy in enemies.ToArray())
         {
             if (enemy != null)
             {
-                enemy.MoveEnemy();
+                if (enemy.MoveEnemy())
+                    enemyMovement = true;
             }
         }
 
-        yield return new WaitForSeconds(turnDelay);
+        if (enemyMovement)
+            yield return new WaitForSeconds(MovingObject.moveTime);
+
+        yield return new WaitForSeconds(turnDelay * 2);
 
         playersTurn = true;
         playerScript.input = true;
@@ -157,6 +165,8 @@ public class GameManager : MonoBehaviour {
         }
         enemies.Clear();
 
+        collectibleExists = hasCollectible = false;
+
         switch (level)
         {
             case 1:
@@ -174,7 +184,12 @@ public class GameManager : MonoBehaviour {
             case 5:
                 generateLevel5();
                 break;
-
+            case 6:
+                generateLevel6();
+                break;
+            case 7:
+                generateLevel7();
+                break;
         }
     }
 
@@ -220,6 +235,23 @@ public class GameManager : MonoBehaviour {
         instantiateEnemy("Patrol", 3f, 3f, -90f);
         instantiateEnemy("Patrol", 3f, 5f, -90f);
         instantiateEnemy("Patrol", 7f, 7f, 90f);
+
+        instantiateCollectible(new Vector3(1f, 0.8f, 1f));
+    }
+
+    void generateLevel6()
+    {
+        player.transform.position = new Vector3(5f, 1f, 1f);
+        instantiateEnemy("Patrol", 1f, 3f, 90f);
+        instantiateCollectible(new Vector3(1f, 0.8f, 5f));
+    }
+
+    void generateLevel7()
+    {
+        player.transform.position = new Vector3(1f, 1f, 1f);
+        instantiateEnemy("Patrol", 7f, 3f, 90f);
+        instantiateEnemy("Patrol", 5f, 5f, -90f);
+        instantiateCollectible(new Vector3(7f, 0.8f, 7f));
     }
 
     void instantiateEnemy(string type, float x, float z, float angleY)
@@ -228,5 +260,11 @@ public class GameManager : MonoBehaviour {
         go.transform.Rotate(0f, angleY, 0f);
         Enemy enemy = go.GetComponent(type) as Enemy;
         enemies.Add(enemy);
+    }
+
+    void instantiateCollectible(Vector3 position)
+    {
+        GameObject go = (GameObject)Instantiate(Resources.Load("Collectible"), position, Quaternion.identity);
+        collectibleExists = true;
     }
 }

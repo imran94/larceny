@@ -22,13 +22,18 @@ public class Patrol : Enemy {
             //Vector3 distance = moveTo - transform.position;
             //StartCoroutine(SmoothMovement((int)distance.x, (int)distance.z, moveTo));
             transform.position = moveTo;
+
+            end = transform.localPosition + transform.forward;
+            end.x = Mathf.Round(end.x);
+            end.z = Mathf.Round(end.z);
+            if (!TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
+            {
+                StartCoroutine(Rotate(180f));
+            }
+
             return true;
         }
-        else
-        {
-            //transform.Rotate(new Vector3(0f, 180f, 0f));
-            StartCoroutine(Rotate(180f));
-            return false;
-        }
+
+        return false;
     }
 }
