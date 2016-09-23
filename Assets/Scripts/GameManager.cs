@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour
     public void generateLevel(int level)
     {
         colliding = false;
+        player.SetActive(true);
 
         if (player == null)
             player = Instantiate(Resources.Load("Player")) as GameObject;

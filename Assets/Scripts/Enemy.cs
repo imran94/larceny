@@ -9,6 +9,10 @@ public abstract class Enemy : MovingObject
     protected override void Start()
     {
         player = GameObject.Find("Player");
+
+        if (player == null)
+            player = GameObject.Find("Player(Clone)");
+
         base.Start();
     }
 
@@ -33,8 +37,15 @@ public abstract class Enemy : MovingObject
             GameManager.instance.colliding = true;
             Debug.Log("Enemy collision, playersturn: " + GameManager.instance.playersTurn +
                 ", enemiesMoving: " + GameManager.instance.enemiesMoving);
+            player.gameObject.SetActive(false);
             StartCoroutine(GameManager.instance.GameOver());
         }
+    }
+
+    protected bool playerDetected()
+    {
+        return (int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).x)
+                && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).z);
     }
 
     abstract public bool MoveEnemy();

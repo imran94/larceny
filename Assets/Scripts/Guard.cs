@@ -19,8 +19,7 @@ public class Guard : Enemy {
         if (TileMap.tiles[(int)end.x, (int)end.z].isWalkable)
         {
             // if player detected
-            if ((int)Mathf.Round(player.transform.position.x) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).x)
-                    && (int)Mathf.Round(player.transform.position.z) == (int)Mathf.Round((transform.localPosition + transform.forward * 2).z))
+            if (playerDetected())
             {
                 //transform.localPosition += transform.forward * 2;
                 Vector3 moveTo = transform.localPosition + transform.forward * 2;
