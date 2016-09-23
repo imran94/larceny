@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
+    Text text;
     public float levelStartDelay = 1.0f;
     public float turnDelay = 3f;
     public static GameManager instance = null;
     public GameObject WinImg;
     public AudioClip SFX_LevelComplete;
+    public GameObject Tut1;
+    public GameObject Tut2;
 
     private GameObject player;
     private GameObject collectible;
@@ -57,6 +61,8 @@ public class GameManager : MonoBehaviour
 
         source = GetComponent<AudioSource>();
         SFX_LevelComplete = Resources.Load("SFX_LevelComplete") as AudioClip;
+
+        text = GetComponent<Text>(); 
 
         InitGame();
     }
@@ -236,12 +242,14 @@ public class GameManager : MonoBehaviour
     void generateLevel1()
     {
         player.transform.position = new Vector3(1f, 1f, 1f);
+        Tut1.SetActive(true);
     }
 
     void generateLevel2()
     {
         player.transform.position = new Vector3(1f, 1f, 1f);
         instantiateEnemy("Guard", 5f, 1f, 90f);
+        Tut2.SetActive(true);
     }
 
     void generateLevel3()
