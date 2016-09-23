@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class LoadOnClick : MonoBehaviour {
     public GameObject LoadingImg;
+    public GameObject PauseImg;
 
     public void LoadScene (int sceneIndex)
     {
@@ -11,8 +12,40 @@ public class LoadOnClick : MonoBehaviour {
         SceneManager.LoadScene(sceneIndex); //Loads scene based on the index of each scene
     }
 
+    public void LoadMenu(int sceneIndex)
+    {
+        LoadingImg.SetActive(true); //Displays loading screen overlay
+        SceneManager.LoadScene(sceneIndex); //Loads scene based on the index of each scene
+        Loader.level = 1;
+    }
+
     public void OnClickExit()
     {
         Application.Quit();
     }
+
+    public void OnClickPause()
+    {
+        if (Time.timeScale != 0) //If it is not currently paused
+        {
+            Time.timeScale = 0; //Pause the game
+            PauseImg.SetActive(true);
+        }
+        else
+        {
+            Time.timeScale = 1; //Unpause the game
+            PauseImg.SetActive(false);
+        }
+
+        Debug.Log("Paused");
+    }
+
+    public void LevelTransition (int sceneIndex)
+    {
+        Loader.level++;
+        //LevelText.levelNum++;
+        SceneManager.LoadScene(sceneIndex);
+    }
+
+
 }
