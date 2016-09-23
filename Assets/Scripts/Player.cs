@@ -5,8 +5,10 @@ using System;
 public class Player : MovingObject {
 
     public float restartLevelDelay = 1f;
+    public AudioClip SFX_Collision;
 
     private Animator animator;
+    private AudioSource source;
 
     // Used to store location of screen touch origin for mobile controls
     private Vector3 touchOrigin = -Vector3.one;
@@ -27,6 +29,8 @@ public class Player : MovingObject {
     protected override void Start()
     {
         animator = GetComponent<Animator>();
+
+        source = GetComponent<AudioSource>();
 
         input = true;
         couldBeSwipe = false;
@@ -165,6 +169,7 @@ public class Player : MovingObject {
                 ", enemiesMoving: " + GameManager.instance.enemiesMoving);
             Destroy(collision.gameObject);
             GameManager.instance.colliding = false;
+            source.Play();
         }
     }
 }
