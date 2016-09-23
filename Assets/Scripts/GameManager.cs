@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public bool collectibleExists;
     public bool hasCollectible;
 
+    public bool colliding;
+
     public GameObject tileMap;
     public TileMap tileScript;
 
@@ -153,6 +155,8 @@ public class GameManager : MonoBehaviour
 
     public void generateLevel(int level)
     {
+        colliding = false;
+
         if (player == null)
             player = Instantiate(Resources.Load("Player")) as GameObject;
 

@@ -155,11 +155,16 @@ public class Player : MovingObject {
 
     void OnCollisionEnter(Collision collision)
     {
+        if (GameManager.instance.colliding) return;
+
         if (GameManager.instance.playersTurn && !GameManager.instance.enemiesMoving &&
             (collision.gameObject.name == "Guard(Clone)" || collision.gameObject.name == "Patrol(Clone)"))
         {
-            Debug.Log("Player collision");
+            GameManager.instance.colliding = true;
+            Debug.Log("Player collision, playersturn: " + GameManager.instance.playersTurn +
+                ", enemiesMoving: " + GameManager.instance.enemiesMoving);
             Destroy(collision.gameObject);
+            GameManager.instance.colliding = false;
         }
     }
 }
