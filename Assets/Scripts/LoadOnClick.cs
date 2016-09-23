@@ -43,8 +43,8 @@ public class LoadOnClick : MonoBehaviour {
     public void LevelTransition (int sceneIndex)
     {
         Loader.level++;
+        //LevelText.levelNum++;
         SceneManager.LoadScene(sceneIndex);
-        Debug.Log("Generate Level Called");
     }
 
 
