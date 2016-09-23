@@ -10,6 +10,7 @@ public class LoadOnClick : MonoBehaviour {
     {
         LoadingImg.SetActive(true); //Displays loading screen overlay
         SceneManager.LoadScene(sceneIndex); //Loads scene based on the index of each scene
+        Time.timeScale = 1;
     }
 
     public void LoadMenu(int sceneIndex)

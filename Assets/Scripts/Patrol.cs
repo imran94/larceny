@@ -4,11 +4,18 @@ using System;
 
 public class Patrol : Enemy {
 
-	
-	//protected override void Update ()
+
+    //protected override void Update ()
     //{
-        //transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
+    //transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
     //}
+    public AudioClip SFX_Enemy_Move;
+    private AudioSource source;
+
+    void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
 
     public override bool MoveEnemy()
     {
@@ -21,6 +28,9 @@ public class Patrol : Enemy {
             Vector3 moveTo = transform.localPosition + transform.forward * 2;
             Vector3 distance = moveTo - transform.position;
             StartCoroutine(SmoothMovement((int)distance.x, (int)distance.z, moveTo));
+            transform.position = moveTo;
+
+            source.PlayOneShot(SFX_Enemy_Move, 1f);
 
             return true;
         }

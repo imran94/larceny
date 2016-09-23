@@ -9,23 +9,25 @@ public class GameManager : MonoBehaviour
     public float turnDelay = 3f;
     public static GameManager instance = null;
     public GameObject WinImg;
+    public AudioClip SFX_LevelComplete;
 
     private GameObject player;
     private GameObject collectible;
+    private AudioSource source;
 
     private Player playerScript;
     public bool playersTurn = true;
     public bool enemiesMoving;
 
-    public bool collectibleExists;
-    public bool hasCollectible;
+    public bool collectibleExists = false;
+    public bool CollectiblePickedUp = false;
 
     public bool colliding;
 
     public GameObject tileMap;
     public TileMap tileScript;
 
-    private List<Enemy> enemies;
+    public List<Enemy> enemies;
 
     // Use this for initialization
     void Awake()
@@ -53,6 +55,8 @@ public class GameManager : MonoBehaviour
         tileMap = Instantiate(Resources.Load("TileMap")) as GameObject;
         tileScript = tileMap.GetComponent<TileMap>();
         tileScript.generateLevel(Loader.level);
+
+        source = GetComponent<AudioSource>();
 
         InitGame();
     }
@@ -128,7 +132,9 @@ public class GameManager : MonoBehaviour
     {
         //resetLvl();
         Debug.Log("All Enemies Killed: " + allEnemiesKilled());
+
         WinImg.SetActive(true);
+        source.PlayOneShot(SFX_LevelComplete, 1F);
     }
 
     public IEnumerator GameOver()
@@ -192,7 +198,7 @@ public class GameManager : MonoBehaviour
         }
         enemies.Clear();
 
-        collectibleExists = hasCollectible = false;
+        collectibleExists = CollectiblePickedUp = false;
         if (collectible != null)
             Destroy(collectible);
 

@@ -6,11 +6,11 @@ public abstract class MovingObject : MonoBehaviour
 {
     public static float moveTime = 0.1f;           //Time it will take object to move, in seconds.
     public LayerMask blockingLayer;         //Layer on which collision will be checked.
-    //public AudioClip SFX_Movement;        //Specifying audio file
 
     private BoxCollider boxCollider;      //The BoxCollider component attached to this object.
     protected float inverseMoveTime;          //Used to make movement more efficient.
     //private AudioSource source;
+
     protected bool moving;
     protected bool rotating;
     protected Rigidbody rb;               //The Rigidbody component attached to this object.
@@ -85,7 +85,7 @@ public abstract class MovingObject : MonoBehaviour
         {
             Vector3 newPosition = Vector3.MoveTowards(rb.position, end, inverseMoveTime * Time.deltaTime);
             rb.MovePosition(newPosition);
-            
+
             yield return null;
         }
 

@@ -25,8 +25,7 @@ public class PreserveOnLoad : MonoBehaviour {
         {
             Destroy(gameObject);
             //Implementation for BGM_Lvl1
-            source.clip = BGM_Lvl1_Surface_Tension;
-            source.Play();
+            source.PlayOneShot(BGM_Lvl1_Surface_Tension, 1f);
         }
     }
 }
