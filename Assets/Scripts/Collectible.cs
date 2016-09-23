@@ -3,13 +3,22 @@ using System.Collections;
 
 public class Collectible : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Start ()
+    {
+        transform.Rotate(45f, 45f, 45f);
+    }
+
+    void Update ()
+    {
+        transform.Rotate(new Vector3(15, 30, 45) * Time.deltaTime);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "Player" )
+        {
+            GameManager.instance.hasCollectible = true;
+            Destroy(this.gameObject);
+        }
+    }
 }
