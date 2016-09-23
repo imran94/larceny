@@ -49,6 +49,10 @@ public class Player : MovingObject {
         if (!GameManager.instance.playersTurn) return;
         if (!input) return;
 
+        if ((int)Mathf.Round(transform.rotation.y) % 90 != 0)
+            if (!rotating)
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
         base.Update();
         //transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
 

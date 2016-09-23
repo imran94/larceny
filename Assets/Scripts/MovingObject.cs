@@ -12,11 +12,9 @@ public abstract class MovingObject : MonoBehaviour
     protected float inverseMoveTime;          //Used to make movement more efficient.
     //private AudioSource source;
     protected bool moving;
+    protected bool rotating;
     protected Rigidbody rb;               //The Rigidbody component attached to this object.
 
-    public float speed;
-
-    //Protected, virtual functions can be overridden by inheriting classes.
     protected virtual void Start()
     {
         //Get a component reference to this object's BoxCollider2D
@@ -30,14 +28,15 @@ public abstract class MovingObject : MonoBehaviour
         inverseMoveTime = 1f / moveTime;
 
         moving = false;
-        speed = 0.2f;
-
+        rotating = false;
+        
         //source = GetComponent<AudioSource>();
     }
 
     protected virtual void Update()
     {
-        transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
+        if (!moving)
+            transform.position = new Vector3((Mathf.Round(transform.position.x)), transform.position.y, Mathf.Round(transform.position.z));
     }
 
     protected virtual bool Move(int xDir, int zDir)
@@ -74,6 +73,7 @@ public abstract class MovingObject : MonoBehaviour
     //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(int xDir, int zDir, Vector3 end)
     {
+        moving = true;
         char c;
 
         if (xDir != 0)
@@ -98,10 +98,12 @@ public abstract class MovingObject : MonoBehaviour
             StartCoroutine(Rotate(180f));
         }
         GameManager.instance.playersTurn = false;
+        moving = false;
     }
 
     protected IEnumerator Rotate(float rotationAmount)
     {
+        rotating = true;
         Quaternion finalRotation = Quaternion.Euler(0, rotationAmount, 0) * rb.rotation;
 
         Debug.Log("transform.rotation: " + transform.rotation + " finalRotation: " + finalRotation);
@@ -111,6 +113,7 @@ public abstract class MovingObject : MonoBehaviour
             rb.rotation = Quaternion.Lerp(transform.rotation, finalRotation, /*Time.deltaTime * speed*/moveTime);
             yield return null;
         }
+        rotating = false;
     }
 
     //The virtual keyword means AttemptMove can be overridden by inheriting classes using the override keyword.
