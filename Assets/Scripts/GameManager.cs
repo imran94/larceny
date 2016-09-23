@@ -5,13 +5,14 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-
     public float levelStartDelay = 1.0f;
     public float turnDelay = 3f;
     public static GameManager instance = null;
     public GameObject WinImg;
 
     private GameObject player;
+    private GameObject collectible;
+
     private Player playerScript;
     public bool playersTurn = true;
     public bool enemiesMoving;
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
         //Get a component reference to the attached TileMap script
         tileMap = Instantiate(Resources.Load("TileMap")) as GameObject;
         tileScript = tileMap.GetComponent<TileMap>();
+        tileScript.generateLevel(Loader.level);
 
         InitGame();
     }
@@ -98,14 +100,21 @@ public class GameManager : MonoBehaviour
         StartCoroutine(MoveEnemies());
     }
 
-    public void AddEnemiesToScript(Enemy script)
+    public bool allEnemiesKilled()
     {
-        //enemies.Add(script);
+        foreach (Enemy e in enemies)
+        {
+            if (e != null)
+                return false;
+        }
+
+        return true;
     }
 
     public void levelComplete()
     {
         //resetLvl();
+        Debug.Log("All Enemies Killed: " + allEnemiesKilled());
         WinImg.SetActive(true);
     }
 
@@ -117,7 +126,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(levelStartDelay);
 
-        Destroy(GameObject.Find("TileMap"));
+        Destroy(tileMap);
 
         //InitGame();
         //return;
@@ -161,7 +170,8 @@ public class GameManager : MonoBehaviour
         if (player == null)
             player = Instantiate(Resources.Load("Player")) as GameObject;
 
-        tileScript.generateLevel(level);
+        if (tileMap == null)
+            tileScript.generateLevel(level);
 
         foreach (Enemy e in enemies)
         {
@@ -171,6 +181,8 @@ public class GameManager : MonoBehaviour
         enemies.Clear();
 
         collectibleExists = hasCollectible = false;
+        if (collectible != null)
+            Destroy(collectible);
 
         switch (level)
         {
@@ -269,7 +281,7 @@ public class GameManager : MonoBehaviour
 
     void instantiateCollectible(Vector3 position)
     {
-        GameObject go = (GameObject)Instantiate(Resources.Load("Collectible"), position, Quaternion.identity);
+        collectible = (GameObject)Instantiate(Resources.Load("Collectible"), position, Quaternion.identity);
         collectibleExists = true;
     }
 }
