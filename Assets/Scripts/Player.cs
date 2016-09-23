@@ -32,6 +32,8 @@ public class Player : MovingObject {
         animator = GetComponent<Animator>();
 
         source = GetComponent<AudioSource>();
+        SFX_Movement = Resources.Load("SFX_Movement") as AudioClip;
+        SFX_Collision = Resources.Load("SFX_Collision") as AudioClip;
 
         input = true;
         couldBeSwipe = false;

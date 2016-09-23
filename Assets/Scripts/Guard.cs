@@ -14,6 +14,7 @@ public class Guard : Enemy {
 
     void Awake()
     {
+        SFX_Enemy_Move = Resources.Load("SFX_Enemy_Move") as AudioClip;
         source = GetComponent<AudioSource>();
     }
 

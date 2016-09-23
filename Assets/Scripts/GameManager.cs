@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
         //DontDestroyOnLoad(this);
         /** gameObject needs to be destroyed in order to eliminate the bug **/
 
-
         player = GameObject.Find("Player");
         playerScript = player.GetComponent<Player>();
 
@@ -57,6 +56,7 @@ public class GameManager : MonoBehaviour
         tileScript.generateLevel(Loader.level);
 
         source = GetComponent<AudioSource>();
+        SFX_LevelComplete = Resources.Load("SFX_LevelComplete") as AudioClip;
 
         InitGame();
     }
