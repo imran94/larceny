@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     private GameObject player;
     private GameObject collectible;
+    private GameObject nextBtn;
     private AudioSource source;
 
     private Player playerScript;
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find("Player");
         playerScript = player.GetComponent<Player>();
 
+        nextBtn = GameObject.Find("/Canvas_Win/PauseImg");
+        
         enemies = new List<Enemy>();
 
         //Get a component reference to the attached TileMap script
