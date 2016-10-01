@@ -48,7 +48,7 @@ public class LoadOnClick : MonoBehaviour {
     {
         Loader.level++;
         SceneManager.LoadScene(sceneIndex);
-        if (Loader.maxLevel == true)
+        if (Loader.level > Loader.maxLevel)
         {
             Debug.Log("MaxLevel CHecked");
             NxtBtn.SetActive(false);
