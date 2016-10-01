@@ -14,4 +14,9 @@ public class Loader : MonoBehaviour {
 
         DontDestroyOnLoad(this.gameObject);
 	}
+
+    bool checkMaxLevel()
+    {
+        return level == maxLevel;
+    }
 }
