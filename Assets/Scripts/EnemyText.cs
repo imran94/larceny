@@ -10,7 +10,6 @@ public class EnemyText : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         text = gameObject.GetComponent<Text>();
-        Debug.Log("text == null: " + (text == null));
 	}
 
 	// Update is called once per frame

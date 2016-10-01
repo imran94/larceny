@@ -19,7 +19,6 @@ public class CollectibleText : MonoBehaviour {
 
         if (GameManager.instance.collectibleExists == true)
         {
-            Debug.Log("Collectible exists");
             CollectibleTxt.SetActive(true);
             if (GameManager.instance.CollectiblePickedUp == false)
             {

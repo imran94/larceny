@@ -167,7 +167,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator MoveEnemies()
     {
-        yield return new WaitForSeconds(MovingObject.moveTime);
+        while (playerScript.moving)
+            yield return new WaitForEndOfFrame();
+
         bool enemyMovement = false;
 
         foreach (Enemy enemy in enemies.ToArray())
@@ -180,9 +182,7 @@ public class GameManager : MonoBehaviour
         }
 
         if (enemyMovement)
-            yield return new WaitForSeconds(MovingObject.moveTime);
-
-        yield return new WaitForSeconds(turnDelay * 4);
+            yield return new WaitForSeconds(enemies[1].moveTime);
 
         playersTurn = true;
         playerScript.input = true;
