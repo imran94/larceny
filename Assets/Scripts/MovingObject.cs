@@ -89,7 +89,7 @@ public abstract class MovingObject : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("Time to complete movement: " + (Time.time - startTime));
+        //Debug.Log("Time to complete movement: " + (Time.time - startTime));
 
         end = transform.localPosition + transform.forward;
         end.x = Mathf.Round(end.x);
@@ -99,8 +99,11 @@ public abstract class MovingObject : MonoBehaviour
         {
             StartCoroutine(Rotate(180f));
         }
+
         if (this is Player)
+        {
             GameManager.instance.playersTurn = false;
+        }
         moving = false;
     }
 
@@ -113,11 +116,8 @@ public abstract class MovingObject : MonoBehaviour
         //Debug.Log("rb.rotation.y: " + rb.rotation.y + ", finalRotation.y " + finalRotation.y);
 
         do
-        {
-<<<<<<< HEAD
-            
+        {     
             rb.rotation = Quaternion.Lerp(transform.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
-=======
             //Debug.Log("rb.rotation: " + transform.rotation + ", finalRotation " + finalRotation);
             rb.rotation = Quaternion.Lerp(rb.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
             if (rb.rotation == previousRotation)
@@ -129,23 +129,24 @@ public abstract class MovingObject : MonoBehaviour
                 i = 0;
             }
 
-            if (i == 3)
+            if (i >= 3)
                 break;
 
             previousRotation = rb.rotation;
->>>>>>> origin/master
             yield return null;
         } while (Mathf.Abs(rb.rotation.y) != finalRotation.y);
         /*while (Mathf.Abs(finalRotation.y - rb.rotation.y) != 1.414213f);*/
 
-            rotating = false;
+        rotating = false;
 
-        Debug.Log("Time to complete rotation: " + (Time.time - startTime));
-        Debug.Log("rb.rotation: " + Mathf.Round(transform.rotation.y) + ", finalRotation " + Mathf.Round(finalRotation.y));
+        //Debug.Log("Time to complete rotation: " + (Time.time - startTime));
+        //Debug.Log("rb.rotation: " + Mathf.Round(transform.rotation.y) + ", finalRotation " + Mathf.Round(finalRotation.y));
     }
 
     public IEnumerator explode(bool destroy)
     {
+        //gameObject.SetActive(false);
+        rb.isKinematic = true;
 
         if (GetComponent<MeshFilter>() == null || GetComponent<SkinnedMeshRenderer>() == null)
         {
@@ -211,16 +212,19 @@ public abstract class MovingObject : MonoBehaviour
                 GO.transform.rotation = transform.rotation;
                 GO.AddComponent<MeshRenderer>().material = materials[submesh];
                 GO.AddComponent<MeshFilter>().mesh = mesh;
-                GO.AddComponent<BoxCollider>();
+                //GO.AddComponent<BoxCollider>();
                 Vector3 explosionPos = new Vector3(transform.position.x + UnityEngine.Random.Range(-0.5f, 0.5f), transform.position.y + UnityEngine.Random.Range(0f, 0.5f), transform.position.z + UnityEngine.Random.Range(-0.5f, 0.5f));
-                GO.AddComponent<Rigidbody>().AddExplosionForce(UnityEngine.Random.Range(300, 500), explosionPos, 5);
-                Destroy(GO, 5 + UnityEngine.Random.Range(0.0f, 5.0f));
+
+                GO.AddComponent<Rigidbody>().AddExplosionForce(UnityEngine.Random.Range(300, 500), explosionPos, 5, 1);
+                //GO.AddComponent<Rigidbody>().AddExplosionForce()
+                //Destroy(GO, 5 + UnityEngine.Random.Range(0.0f, 5.0f));
+                Destroy(GO, 1.0f);
             }
         }
 
         GetComponent<Renderer>().enabled = false;
 
-        yield return new WaitForSeconds(1.0f);
+        //yield return new WaitForSeconds(1.0f);
         if (destroy)
         {
             Destroy(gameObject);

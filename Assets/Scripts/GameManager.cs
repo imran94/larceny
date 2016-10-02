@@ -80,22 +80,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape)) { Application.Quit(); }
         if (Input.GetKeyDown(KeyCode.R)) { resetLvl(); }
-
-        if (player == null)
-        {
-            //Time.timeScale = 0;
-            //Debug.Log("Player has been destroyed");
-
-            //Destroy(GameObject.Find("TileMap"));
-
-            //InitGame();
-            //return;
-            //int sceneIndex = SceneManager.GetActiveScene().buildIndex;
-            //SceneManager.LoadScene(sceneIndex);
-
-            //resetLvl();
-        }
-
+        
         if (playersTurn || enemiesMoving || gameOver) return;
 
         if (player != null)
@@ -154,6 +139,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(playerScript.explode(true));
         float currentTime = Time.timeScale;
         //Time.timeScale = 0;
+        //Destroy(player);
 
         yield return new WaitForSeconds(levelStartDelay);
 
@@ -185,7 +171,7 @@ public class GameManager : MonoBehaviour
         }
 
         if (enemyMovement)
-            yield return new WaitForSeconds(enemies[1].moveTime);
+            yield return new WaitForSeconds(enemies[0].moveTime * enemies.Count);
 
         playersTurn = true;
         playerScript.input = true;

@@ -174,15 +174,20 @@ public class Player : MovingObject {
     {
         if (GameManager.instance.colliding) return;
 
-        if (GameManager.instance.playersTurn && !GameManager.instance.enemiesMoving &&
+        if (collision.gameObject.name == "Guard(Clone)" || collision.gameObject.name == "Patrol(Clone)")
+            Debug.Log("Player collision, playersturn: " + GameManager.instance.playersTurn +
+                ", enemiesMoving: " + GameManager.instance.enemiesMoving);
+
+        if ((GameManager.instance.playersTurn || !GameManager.instance.enemiesMoving) &&
             (collision.gameObject.name == "Guard(Clone)" || collision.gameObject.name == "Patrol(Clone)"))
         {
+            rb.isKinematic = true;
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             GameManager.instance.colliding = true;
             StartCoroutine(enemy.explode(true));
             source.PlayOneShot(SFX_Collision, 1F); //Play collision sound
+            rb.isKinematic = false;
             GameManager.instance.colliding = false;
-            Debug.Log("Collision sound played");
         }
     }
 }

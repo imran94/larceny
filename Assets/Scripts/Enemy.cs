@@ -31,12 +31,14 @@ public abstract class Enemy : MovingObject
     {
         if (GameManager.instance.colliding) return;
 
-        if (!GameManager.instance.playersTurn && GameManager.instance.enemiesMoving
-            && collision.gameObject.name == "Player")
-        {
-            GameManager.instance.colliding = true;
+        if (collision.gameObject.tag == "Player")
             Debug.Log("Enemy collision, playersturn: " + GameManager.instance.playersTurn +
                 ", enemiesMoving: " + GameManager.instance.enemiesMoving);
+
+        if ((!GameManager.instance.playersTurn || GameManager.instance.enemiesMoving)
+            && collision.gameObject.tag == "Player")
+        {
+            GameManager.instance.colliding = true;
             StartCoroutine(GameManager.instance.GameOver());
         }
     }

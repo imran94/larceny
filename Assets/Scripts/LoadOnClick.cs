@@ -48,11 +48,7 @@ public class LoadOnClick : MonoBehaviour {
     {
         Loader.level++;
         SceneManager.LoadScene(sceneIndex);
-<<<<<<< HEAD
-        if (Loader.checkMaxLevel())
-=======
         if (Loader.level > Loader.maxLevel)
->>>>>>> origin/master
         {
             Debug.Log("MaxLevel CHecked");
             NextBtn.SetActive(false);
