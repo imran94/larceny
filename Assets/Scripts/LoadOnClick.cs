@@ -11,6 +11,8 @@ public class LoadOnClick : MonoBehaviour {
 
     public void LoadScene (int sceneIndex)
     {
+        Loader.level = 1;
+
         LoadingImg.SetActive(true); //Displays loading screen overlay
         SceneManager.LoadScene(sceneIndex); //Loads scene based on the index of each scene
         Time.timeScale = 1;
@@ -48,7 +50,7 @@ public class LoadOnClick : MonoBehaviour {
     {
         Loader.level++;
         SceneManager.LoadScene(sceneIndex);
-        if (Loader.level > Loader.maxLevel)
+        if (Loader.level >= Loader.maxLevel)
         {
             Debug.Log("MaxLevel CHecked");
             NextBtn.SetActive(false);

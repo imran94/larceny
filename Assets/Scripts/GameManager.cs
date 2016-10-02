@@ -160,18 +160,22 @@ public class GameManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
 
         bool enemyMovement = false;
+        int movingEnemyIndex = 0;
 
         foreach (Enemy enemy in enemies.ToArray())
         {
             if (enemy != null)
             {
                 if (enemy.MoveEnemy())
+                {
                     enemyMovement = true;
+                    movingEnemyIndex = enemies.IndexOf(enemy);
+                }
             }
         }
 
         if (enemyMovement)
-            yield return new WaitForSeconds(enemies[0].moveTime * enemies.Count);
+            yield return new WaitForSeconds(enemies[movingEnemyIndex].moveTime * enemies.Count);
 
         playersTurn = true;
         playerScript.input = true;

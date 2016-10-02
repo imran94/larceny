@@ -69,8 +69,8 @@ public abstract class MovingObject : MonoBehaviour
     //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(int xDir, int zDir, Vector3 end)
     {
-        //while (moving)
-            //yield return null;
+        while (moving || rotating)
+            yield return null;
 
         moving = true;
         startTime = Time.time;
@@ -117,8 +117,6 @@ public abstract class MovingObject : MonoBehaviour
 
         do
         {     
-            rb.rotation = Quaternion.Lerp(transform.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
-            //Debug.Log("rb.rotation: " + transform.rotation + ", finalRotation " + finalRotation);
             rb.rotation = Quaternion.Lerp(rb.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
             if (rb.rotation == previousRotation)
             {
@@ -135,7 +133,6 @@ public abstract class MovingObject : MonoBehaviour
             previousRotation = rb.rotation;
             yield return null;
         } while (Mathf.Abs(rb.rotation.y) != finalRotation.y);
-        /*while (Mathf.Abs(finalRotation.y - rb.rotation.y) != 1.414213f);*/
 
         rotating = false;
 
@@ -145,7 +142,6 @@ public abstract class MovingObject : MonoBehaviour
 
     public IEnumerator explode(bool destroy)
     {
-        //gameObject.SetActive(false);
         rb.isKinematic = true;
 
         if (GetComponent<MeshFilter>() == null || GetComponent<SkinnedMeshRenderer>() == null)
