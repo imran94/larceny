@@ -4,8 +4,8 @@ using System.Collections;
 public class Loader : MonoBehaviour {
 
 	public GameObject tileMap;
-    public static int level = 6;
-    public static bool maxLevel = false;
+    public static int level = 1;
+    public static int maxLevel = 7;
 
 	void Awake () 
 	{
@@ -15,12 +15,12 @@ public class Loader : MonoBehaviour {
         DontDestroyOnLoad(this.gameObject);
 	}
 
-    bool checkMaxLevel()
+    public static 
+        bool checkMaxLevel()
     {
-        if (level == 7)
-        {
-            maxLevel = true;
-        }
-        return maxLevel;
+        if (level == maxLevel)
+            return true;
+
+        return false;
     }
 }

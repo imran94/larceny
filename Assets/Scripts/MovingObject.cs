@@ -110,7 +110,7 @@ public abstract class MovingObject : MonoBehaviour
         while (rb.rotation != finalRotation)
         {
             
-            rb.rotation = Quaternion.Lerp(transform.rotation, finalRotation, /*Time.deltaTime * speed*/moveTime);
+            rb.rotation = Quaternion.Lerp(transform.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
             yield return null;
         }
         rotating = false;

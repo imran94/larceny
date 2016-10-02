@@ -107,10 +107,8 @@ public class TileMap : MonoBehaviour {
 
     void assignTiles(int mapSizeX, int mapSizeZ, int[,] lvlArray)
     {
-        Debug.Log("assigning tiles");
         for (int i = 0; i < mapSizeZ; i++)
         {
-            Debug.Log(i);
             for (int j = 0; j < mapSizeX; j++)
             {
                 tiles[j, i] = tileTypes[lvlArray[mapSizeZ - 1 - i, j]];
