@@ -114,6 +114,10 @@ public abstract class MovingObject : MonoBehaviour
 
         do
         {
+<<<<<<< HEAD
+            
+            rb.rotation = Quaternion.Lerp(transform.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
+=======
             //Debug.Log("rb.rotation: " + transform.rotation + ", finalRotation " + finalRotation);
             rb.rotation = Quaternion.Lerp(rb.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
             if (rb.rotation == previousRotation)
@@ -129,6 +133,7 @@ public abstract class MovingObject : MonoBehaviour
                 break;
 
             previousRotation = rb.rotation;
+>>>>>>> origin/master
             yield return null;
         } while (Mathf.Abs(rb.rotation.y) != finalRotation.y);
         /*while (Mathf.Abs(finalRotation.y - rb.rotation.y) != 1.414213f);*/
