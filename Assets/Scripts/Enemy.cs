@@ -37,7 +37,6 @@ public abstract class Enemy : MovingObject
             GameManager.instance.colliding = true;
             Debug.Log("Enemy collision, playersturn: " + GameManager.instance.playersTurn +
                 ", enemiesMoving: " + GameManager.instance.enemiesMoving);
-            player.gameObject.SetActive(false);
             StartCoroutine(GameManager.instance.GameOver());
         }
     }

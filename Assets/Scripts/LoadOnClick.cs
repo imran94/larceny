@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class LoadOnClick : MonoBehaviour {
     public GameObject LoadingImg;
     public GameObject PauseImg;
-    public GameObject NextBtn;
+    public GameObject NxtBtn;
 
 
     public void LoadScene (int sceneIndex)
@@ -48,14 +48,10 @@ public class LoadOnClick : MonoBehaviour {
     {
         Loader.level++;
         SceneManager.LoadScene(sceneIndex);
-<<<<<<< HEAD
-        if (Loader.checkMaxLevel())
-=======
         if (Loader.level > Loader.maxLevel)
->>>>>>> origin/master
         {
             Debug.Log("MaxLevel CHecked");
-            NextBtn.SetActive(false);
+            NxtBtn.SetActive(false);
         }
     }
 
