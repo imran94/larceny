@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     private GameObject player;
     private GameObject collectible;
+    private GameObject nextBtn;
     private AudioSource source;
 
     private Player playerScript;
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find("Player");
         playerScript = player.GetComponent<Player>();
 
+        nextBtn = GameObject.Find("/Canvas_Win/PauseImg");
+        
         enemies = new List<Enemy>();
 
         //Get a component reference to the attached TileMap script
@@ -164,7 +167,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator MoveEnemies()
     {
-        yield return new WaitForSeconds(MovingObject.moveTime);
+        while (playerScript.moving)
+            yield return new WaitForEndOfFrame();
+
         bool enemyMovement = false;
 
         foreach (Enemy enemy in enemies.ToArray())
@@ -177,9 +182,7 @@ public class GameManager : MonoBehaviour
         }
 
         if (enemyMovement)
-            yield return new WaitForSeconds(MovingObject.moveTime);
-
-        yield return new WaitForSeconds(turnDelay * 4);
+            yield return new WaitForSeconds(enemies[1].moveTime);
 
         playersTurn = true;
         playerScript.input = true;

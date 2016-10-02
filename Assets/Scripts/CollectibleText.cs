@@ -15,9 +15,10 @@ public class CollectibleText : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (text == null) return;
+
         if (GameManager.instance.collectibleExists == true)
         {
-            Debug.Log("Collectible exists");
             CollectibleTxt.SetActive(true);
             if (GameManager.instance.CollectiblePickedUp == false)
             {

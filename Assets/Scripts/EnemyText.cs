@@ -5,16 +5,16 @@ using System.Collections;
 public class EnemyText : MonoBehaviour {
     //reference the text component
     Text text;
-
     public GameObject EnemyTxt;
 
 	// Use this for initialization
 	void Start () {
-        text = GetComponent<Text>();
+        text = gameObject.GetComponent<Text>();
 	}
 
 	// Update is called once per frame
 	void Update () {
+        if (text == null) return;
 
         int enemyAmt = GameManager.instance.enemies.Count;
         int numLeft = GameManager.instance.enemies.Count - GameManager.instance.noOfEnemiesKilled();

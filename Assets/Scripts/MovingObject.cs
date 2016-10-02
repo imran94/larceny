@@ -4,27 +4,22 @@ using System.Collections;
 //The abstract keyword enables you to create classes and class members that are incomplete and must be implemented in a derived class.
 public abstract class MovingObject : MonoBehaviour
 {
-    public static float moveTime = 0.1f;           //Time it will take object to move, in seconds.
-    public LayerMask blockingLayer;         //Layer on which collision will be checked.
+    public float moveTime;           //Time it will take object to move, in seconds.
+    public static float inverseMoveTime;          //Used to make movement more efficient.
 
-    private BoxCollider boxCollider;      //The BoxCollider component attached to this object.
-    protected float inverseMoveTime;          //Used to make movement more efficient.
     //private AudioSource source;
 
-    protected bool moving;
-    protected bool rotating;
+    public bool moving;
+    public bool rotating;
     protected Rigidbody rb;               //The Rigidbody component attached to this object.
 
     protected virtual void Start()
     {
-        //Get a component reference to this object's BoxCollider2D
-        boxCollider = GetComponent<BoxCollider>();
-        
         //Get a component reference to this object's Rigidbody2D
         rb = GetComponent<Rigidbody>();
-        //rb.isKinematic = true;
 
         //By storing the reciprocal of the move time we can use it by multiplying instead of dividing, this is more efficient.
+        moveTime = 0.1f;
         inverseMoveTime = 1f / moveTime;
 
         moving = false;
@@ -70,10 +65,15 @@ public abstract class MovingObject : MonoBehaviour
             return Mathf.Abs((rb.position - end).z);
     }
 
+    float startTime;
     //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(int xDir, int zDir, Vector3 end)
     {
+        //while (moving)
+            //yield return null;
+
         moving = true;
+        startTime = Time.time;
         char c;
 
         if (xDir != 0)
@@ -89,6 +89,8 @@ public abstract class MovingObject : MonoBehaviour
             yield return null;
         }
 
+        Debug.Log("Time to complete movement: " + (Time.time - startTime));
+
         end = transform.localPosition + transform.forward;
         end.x = Mathf.Round(end.x);
         end.z = Mathf.Round(end.z);
@@ -97,23 +99,49 @@ public abstract class MovingObject : MonoBehaviour
         {
             StartCoroutine(Rotate(180f));
         }
-        GameManager.instance.playersTurn = false;
+        if (this is Player)
+            GameManager.instance.playersTurn = false;
         moving = false;
     }
 
     protected IEnumerator Rotate(float rotationAmount)
     {
+        int i = 0;
+        Quaternion previousRotation = rb.rotation;
         rotating = true;
         Quaternion finalRotation = Quaternion.Euler(0, rotationAmount, 0) * rb.rotation;
+        //Debug.Log("rb.rotation.y: " + rb.rotation.y + ", finalRotation.y " + finalRotation.y);
 
-        Debug.Log("transform.rotation: " + transform.rotation + " finalRotation: " + finalRotation);
-        while (rb.rotation != finalRotation)
+        do
         {
+<<<<<<< HEAD
             
             rb.rotation = Quaternion.Lerp(transform.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
+=======
+            //Debug.Log("rb.rotation: " + transform.rotation + ", finalRotation " + finalRotation);
+            rb.rotation = Quaternion.Lerp(rb.rotation, finalRotation, /*Time.deltaTime * speed*/0.3f);
+            if (rb.rotation == previousRotation)
+            {
+                i++;
+            }
+            else
+            {
+                i = 0;
+            }
+
+            if (i == 3)
+                break;
+
+            previousRotation = rb.rotation;
+>>>>>>> origin/master
             yield return null;
-        }
-        rotating = false;
+        } while (Mathf.Abs(rb.rotation.y) != finalRotation.y);
+        /*while (Mathf.Abs(finalRotation.y - rb.rotation.y) != 1.414213f);*/
+
+            rotating = false;
+
+        Debug.Log("Time to complete rotation: " + (Time.time - startTime));
+        Debug.Log("rb.rotation: " + Mathf.Round(transform.rotation.y) + ", finalRotation " + Mathf.Round(finalRotation.y));
     }
 
     //The virtual keyword means AttemptMove can be overridden by inheriting classes using the override keyword.

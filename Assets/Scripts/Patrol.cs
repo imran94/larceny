@@ -16,6 +16,7 @@ public class Patrol : Enemy {
     {
         source = GetComponent<AudioSource>();
         SFX_Enemy_Move = Resources.Load("SFX_Enemy_Move") as AudioClip;
+        moveTime = 0.6f;
     }
 
     public override bool MoveEnemy()
