@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         playerScript = player.GetComponent<Player>();
 
         nextBtn = GameObject.Find("/Canvas_Win/PauseImg");
-        
+
         enemies = new List<Enemy>();
 
         //Get a component reference to the attached TileMap script
@@ -73,6 +73,18 @@ public class GameManager : MonoBehaviour
 
 	public void InitGame ()
     {
+        nextBtn = GameObject.Find("Canvas_Win").transform.FindChild("WinImg").transform.FindChild("NextBtn").gameObject;
+        if (Loader.level >= Loader.maxLevel)
+            nextBtn.SetActive(false);
+        //if (canvasWin.transform.Find("NextBtn") == null)
+            //Debug.Log("Could not find nextBtn");
+        //else
+        //{
+        //    Debug.Log("Iterating through children total: " + transform.childCount);
+        //    foreach (var child in transform)
+        //        Debug.Log(child);
+        //}
+
         generateLevel(Loader.level);
     }
 
@@ -143,7 +155,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(levelStartDelay);
 
-        Destroy(tileMap);
+        //Destroy(tileMap);
 
         //InitGame();
         //return;
@@ -186,16 +198,18 @@ public class GameManager : MonoBehaviour
     {
         colliding = false;
         gameOver = false;
-        //player.SetActive(true);
 
         if (player == null)
         {
             player = Instantiate(Resources.Load("Player")) as GameObject;
             playerScript = player.GetComponent<Player>();
         }
-        if (tileMap == null)
-            tileScript.generateLevel(level);
 
+        if (tileMap == null)
+        {
+            Debug.Log("Generating tilemap");
+            tileScript.generateLevel(level);
+        }
         foreach (Enemy e in enemies)
         {
             if (e != null)
@@ -207,7 +221,12 @@ public class GameManager : MonoBehaviour
         if (collectible != null)
             Destroy(collectible);
 
-        switch (level)
+        generateFromLoader();
+    }
+
+    void generateFromLoader()
+    {
+        switch (Loader.level)
         {
             case 1:
                 generateLevel1();

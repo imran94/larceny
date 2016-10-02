@@ -24,7 +24,7 @@ public abstract class MovingObject : MonoBehaviour
 
         moving = false;
         rotating = false;
-        
+
         //source = GetComponent<AudioSource>();
     }
 
