@@ -76,14 +76,6 @@ public class GameManager : MonoBehaviour
         nextBtn = GameObject.Find("Canvas_Win").transform.FindChild("WinImg").transform.FindChild("NextBtn").gameObject;
         if (Loader.level >= Loader.maxLevel)
             nextBtn.SetActive(false);
-        //if (canvasWin.transform.Find("NextBtn") == null)
-            //Debug.Log("Could not find nextBtn");
-        //else
-        //{
-        //    Debug.Log("Iterating through children total: " + transform.childCount);
-        //    foreach (var child in transform)
-        //        Debug.Log(child);
-        //}
 
         generateLevel(Loader.level);
     }
@@ -137,9 +129,7 @@ public class GameManager : MonoBehaviour
 
     public void levelComplete()
     {
-        //resetLvl();
-        Debug.Log("All Enemies Killed: " + allEnemiesKilled());
-
+        playerScript.input = false;
         WinImg.SetActive(true);
         source.PlayOneShot(SFX_LevelComplete, 1F);
     }
@@ -150,20 +140,10 @@ public class GameManager : MonoBehaviour
         gameOver = true;
         StartCoroutine(playerScript.explode(true));
         float currentTime = Time.timeScale;
-        //Time.timeScale = 0;
-        //Destroy(player);
 
         yield return new WaitForSeconds(levelStartDelay);
 
-        //Destroy(tileMap);
-
-        //InitGame();
-        //return;
-        //int sceneIndex = SceneManager.GetActiveScene().buildIndex;
-        //SceneManager.LoadScene(sceneIndex);
-
         resetLvl();
-        //Time.timeScale = currentTime;
     }
 
     IEnumerator MoveEnemies()
