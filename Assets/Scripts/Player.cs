@@ -24,8 +24,10 @@ public class Player : MovingObject {
     private float minSwipeDist = 3;
     private float maxSwipeTime = 10;
 
-    public RaycastHit hit;
     public bool input;
+
+    public float lifespan = 10.0f;
+    public float fadeTime = 0.5f;
 
     protected override void Start()
     {
@@ -37,6 +39,7 @@ public class Player : MovingObject {
 
         input = true;
         couldBeSwipe = false;
+
         base.Start();
     }
 
@@ -174,10 +177,9 @@ public class Player : MovingObject {
         if (GameManager.instance.playersTurn && !GameManager.instance.enemiesMoving &&
             (collision.gameObject.name == "Guard(Clone)" || collision.gameObject.name == "Patrol(Clone)"))
         {
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             GameManager.instance.colliding = true;
-            Debug.Log("Player collision, playersturn: " + GameManager.instance.playersTurn +
-                ", enemiesMoving: " + GameManager.instance.enemiesMoving);
-            Destroy(collision.gameObject);
+            StartCoroutine(enemy.explode(true));
             source.PlayOneShot(SFX_Collision, 1F); //Play collision sound
             GameManager.instance.colliding = false;
             Debug.Log("Collision sound played");

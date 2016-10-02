@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private Player playerScript;
     public bool playersTurn = true;
     public bool enemiesMoving;
+    private bool gameOver;
 
     public bool collectibleExists = false;
     public bool CollectiblePickedUp = false;
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour
             //resetLvl();
         }
 
-        if (playersTurn || enemiesMoving) return;
+        if (playersTurn || enemiesMoving || gameOver) return;
 
         if (player != null)
         {
@@ -149,6 +150,8 @@ public class GameManager : MonoBehaviour
     public IEnumerator GameOver()
     {
         Debug.Log("Game Over");
+        gameOver = true;
+        StartCoroutine(playerScript.explode(true));
         float currentTime = Time.timeScale;
         //Time.timeScale = 0;
 
@@ -192,11 +195,14 @@ public class GameManager : MonoBehaviour
     public void generateLevel(int level)
     {
         colliding = false;
-        player.SetActive(true);
+        gameOver = false;
+        //player.SetActive(true);
 
         if (player == null)
+        {
             player = Instantiate(Resources.Load("Player")) as GameObject;
-
+            playerScript = player.GetComponent<Player>();
+        }
         if (tileMap == null)
             tileScript.generateLevel(level);
 
@@ -239,6 +245,7 @@ public class GameManager : MonoBehaviour
 
     void resetLvl()
     {
+        //Destroy(player);
         generateLevel(Loader.level);
     }
 
