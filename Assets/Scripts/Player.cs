@@ -19,9 +19,7 @@ public class Player : MovingObject {
     private int stationaryForFrames;
     private TouchPhase lastPhase;
 
-    private string text = "";
-
-    private float minSwipeDist = 3;
+    private float minSwipeDist = 6;
     private float maxSwipeTime = 10;
 
     public bool input;
@@ -41,11 +39,6 @@ public class Player : MovingObject {
         couldBeSwipe = false;
 
         base.Start();
-    }
-
-    void OnGUI()
-    {
-        GUI.Label(new Rect(0, 0, 50, 50), text);
     }
 
     protected override void Update()
@@ -78,7 +71,6 @@ public class Player : MovingObject {
 
 			if (myTouch.phase == TouchPhase.Began)
 			{
-				text = "Touched";
 				startPos = myTouch.position;
 				couldBeSwipe = true;
 				stationaryForFrames = 0;
@@ -86,13 +78,11 @@ public class Player : MovingObject {
 			}
 			if (myTouch.phase == TouchPhase.Stationary)
 			{
-				text = "Stationary";
 				//if (isContinuouslyStationary(6))
 				//	couldBeSwipe = false;
 			}
 			if (myTouch.phase == TouchPhase.Ended)
 			{
-				text = "Ended";
 				if (isASwipe(myTouch))
 				{
 					couldBeSwipe = false;
@@ -100,18 +90,14 @@ public class Player : MovingObject {
 					float differenceX = myTouch.position.x - startPos.x;
 					float differenceY = myTouch.position.y - startPos.y;
 
-					text=("differenceX: " + differenceX + ", differenceY: " + differenceY); 
-
 					if (Mathf.Abs(differenceX) > Mathf.Abs(differenceY))
 					{
 						if (Mathf.Sign(differenceX) == 1f)
 						{
-							text = "horizontal+";
 							horizontal = 1;
 						}
 						else
 						{
-							text = "horizontal-";
 							horizontal = -1;
 						}
 					}
@@ -119,12 +105,10 @@ public class Player : MovingObject {
 					{
 						if (Mathf.Sign (differenceY) == 1f)
 						{
-							text = "vertical+";
 							vertical = 1;
 						}
 						else
 						{
-							text = "vertical-";
 							vertical = -1;
 						}
 					}

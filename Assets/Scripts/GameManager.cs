@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
         }
 
         if (enemyMovement)
-            yield return new WaitForSeconds(enemies[movingEnemyIndex].moveTime * enemies.Count);
+            yield return new WaitForSeconds(enemies[movingEnemyIndex].moveTime);
 
         playersTurn = true;
         playerScript.input = true;
