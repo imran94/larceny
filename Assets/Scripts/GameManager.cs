@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     private GameObject player;
     private GameObject collectible;
     private GameObject nextBtn;
+    private Text winTxt;
     private AudioSource source;
 
     private Player playerScript;
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find("Player");
         playerScript = player.GetComponent<Player>();
 
-        nextBtn = GameObject.Find("/Canvas_Win/PauseImg");
+        //nextBtn = GameObject.Find("/Canvas_Win/PauseImg");
 
         enemies = new List<Enemy>();
 
@@ -73,10 +74,19 @@ public class GameManager : MonoBehaviour
 
 	public void InitGame ()
     {
-        nextBtn = GameObject.Find("Canvas_Win").transform.FindChild("WinImg").transform.FindChild("NextBtn").gameObject;
-        if (Loader.level >= Loader.maxLevel)
-            nextBtn.SetActive(false);
+        GameObject winImg = GameObject.Find("Canvas_Win").transform.FindChild("WinImg").gameObject;
+        winTxt = WinImg.transform.FindChild("WinTxt").gameObject.GetComponent<Text>();
+        nextBtn = WinImg.transform.FindChild("NextBtn").gameObject;
 
+        if (Loader.level < Loader.maxLevel)
+        {
+            winTxt.text = "LEVEL COMPLETE";
+        }
+        else
+        {
+            winTxt.text = "ALL LEVELS COMPLETE";
+            nextBtn.SetActive(false);
+        }
         generateLevel(Loader.level);
     }
 
@@ -202,6 +212,14 @@ public class GameManager : MonoBehaviour
             Destroy(collectible);
 
         generateFromLoader();
+
+        foreach(Enemy e in enemies)
+        {
+            foreach(Enemy e2 in enemies)
+            {
+                Physics.IgnoreCollision(e.GetComponent<Collider>(), e2.GetComponent<Collider>());
+            }
+        }
     }
 
     void generateFromLoader()
@@ -228,6 +246,9 @@ public class GameManager : MonoBehaviour
                 break;
             case 7:
                 generateLevel7();
+                break;
+            case 8:
+                generateLevel8();
                 break;
         }
     }
@@ -294,6 +315,21 @@ public class GameManager : MonoBehaviour
         instantiateEnemy("Patrol", 7f, 3f, 90f);
         instantiateEnemy("Patrol", 5f, 5f, -90f);
         instantiateCollectible(new Vector3(7f, 0.8f, 7f));
+    }
+
+    void generateLevel8()
+    {
+        player.transform.position = new Vector3(5f, 1f, 1f);
+
+        instantiateEnemy("Patrol", 7f, 3f, 0f);
+        instantiateEnemy("Patrol", 7f, 3f, -90f);
+        instantiateEnemy("Patrol", 3f, 7f, -90f);
+
+        instantiateEnemy("Guard", 7f, 5f, 0f);
+        instantiateEnemy("Guard", 3f, 5f, 180f);
+        instantiateEnemy("Guard", 5f, 7f, 180f);
+
+        instantiateCollectible(new Vector3(3f, 0.8f, 9f));
     }
 
     void instantiateEnemy(string type, float x, float z, float angleY)

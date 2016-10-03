@@ -18,11 +18,17 @@ public class LoadOnClick : MonoBehaviour {
         Time.timeScale = 1;
     }
 
+    public void LoadSceneContinue(int sceneIndex)
+    {
+        LoadingImg.SetActive(true); //Displays loading screen overlay
+        SceneManager.LoadScene(sceneIndex); //Loads scene based on the index of each scene
+        Time.timeScale = 1;
+    }
+
     public void LoadMenu(int sceneIndex)
     {
         LoadingImg.SetActive(true); //Displays loading screen overlay
         SceneManager.LoadScene(sceneIndex); //Loads scene based on the index of each scene
-        Loader.level = 1;
     }
 
     public void OnClickExit()
@@ -45,8 +51,6 @@ public class LoadOnClick : MonoBehaviour {
             PauseImg.SetActive(false);
             player.input = true;
         }
-
-        Debug.Log("Paused");
     }
 
     public void LevelTransition (int sceneIndex)

@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Loader : MonoBehaviour {
 
-    public static int level = 1;
-    public const int maxLevel = 7;
+    public static int level = 8;
+    public const int maxLevel = 8;
 
 	void Awake () 
 	{
@@ -17,6 +17,6 @@ public class Loader : MonoBehaviour {
     public static 
         bool checkMaxLevel()
     {
-        return level == maxLevel;
+        return level >= maxLevel;
     }
 }

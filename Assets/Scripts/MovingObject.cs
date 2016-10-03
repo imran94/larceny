@@ -12,11 +12,13 @@ public abstract class MovingObject : MonoBehaviour
     public bool moving;
     public bool rotating;
     protected Rigidbody rb;               //The Rigidbody component attached to this object.
+    //public Collider collider;
 
     protected virtual void Start()
     {
         //Get a component reference to this object's Rigidbody2D
         rb = GetComponent<Rigidbody>();
+        //collider = GetComponent<Collider>();
 
         //By storing the reciprocal of the move time we can use it by multiplying instead of dividing, this is more efficient.
         moveTime = 0.1f;

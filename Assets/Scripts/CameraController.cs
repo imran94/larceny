@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        offset = new Vector3(0f, 5f, -3f);
+        offset = new Vector3(-2f, 5f, -4f);
 
         x = GameManager.instance.tileScript.mapSizeX / 2;
         z = GameManager.instance.tileScript.mapSizeZ / 3;

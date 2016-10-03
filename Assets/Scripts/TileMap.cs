@@ -100,6 +100,9 @@ public class TileMap : MonoBehaviour {
             case 7:
                 generateLevel7();
                 break;
+            case 8:
+                generateLevel8();
+                break;
         }
 
         generateMapVisual();
@@ -260,7 +263,31 @@ public class TileMap : MonoBehaviour {
         };
 
         assignTiles(mapSizeX, mapSizeZ, lvlArray);
+    }
 
+    void generateLevel8()
+    {
+        mapSizeX = 11;
+        mapSizeZ = 11;
+
+        genericLevel();
+
+        int[,] lvlArray = new int[,]
+        {
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 0, 3, 0, 3, 0, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1},
+            {1, 0, 3, 0, 3, 0, 3, 0, 3, 0, 1},
+            {1, 1, 1, 4, 1, 4, 1, 4, 1, 4, 1},
+            {1, 1, 1, 0, 1, 0, 1, 0, 3, 0, 1},
+            {1, 1, 1, 4, 1, 4, 1, 4, 1, 4, 1},
+            {1, 2, 3, 0, 3, 0, 3, 0, 3, 0, 1},
+            {1, 1, 1, 1, 1, 4, 1, 4, 1, 1, 1},
+            {1, 0, 3, 0, 3, 0, 3, 0, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        };
+
+        assignTiles(mapSizeX, mapSizeZ, lvlArray);
     }
 
     // Update is called once per frame
